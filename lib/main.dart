@@ -1,15 +1,16 @@
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:toddlyybeta/login_page.dart';
+import 'package:toddlyybeta/screens/login_page.dart';
 import 'package:toddlyybeta/providers.dart';
-import 'package:toddlyybeta/signup_page.dart';
+import 'package:toddlyybeta/screens/signup_page.dart';
 import 'package:toddlyybeta/user_profile.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:toddlyybeta/providers.dart';
 import 'amplifyconfiguration.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:toddlyybeta/baby_profile.dart';
+import 'package:toddlyybeta/screens/baby_profile.dart';
+import 'package:toddlyybeta/screens/display_baby_profile.dart';
+import 'package:toddlyybeta/screens/edit_baby_profile.dart';
 
 void main() => runApp(ProviderScope(child: MainApp()));
 
@@ -68,12 +69,12 @@ class _MainAppState extends State<MainApp> {
             body: _amplifyConfigured
                 ? checkAuthStatus
                     ? userLoggedIn.getUserCurrentState()
-                        ? BabyProfileScreen()
+                        ? EditProfilePage()
                         : LoginPage()
                     : SignUpPage()
                 : Text('Loading')),
         routes: {
-          BabyProfileScreen.routeName: (ctx) => BabyProfileScreen(),
+          BabyProfileScreen.routeName: (ctx) => UserProfileScreen(),
         });
   }
 
@@ -81,14 +82,18 @@ class _MainAppState extends State<MainApp> {
     try {
       await Amplify.Auth.signOut();
       userLoggedIn.setUserCurrentState(false);
+      userLoggedIn.setUsername("");
       debugPrint("User signed out");
     } on AuthException catch (e) {}
   }
 
   getUserStatus() {
-    handleAuth().then((val) {
+    handleAuth().then((val) async {
       if (val.isSignedIn) {
         userLoggedIn.setUserCurrentState(val.isSignedIn);
+        var currentUser = await Amplify.Auth.getCurrentUser();
+        String username = currentUser.userId;
+        userLoggedIn.setUsername(username);
         setState(() {
           checkAuthStatus = true;
         });

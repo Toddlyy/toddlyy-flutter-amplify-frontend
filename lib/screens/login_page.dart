@@ -1,6 +1,3 @@
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +6,8 @@ import 'package:toddlyybeta/user_profile.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:toddlyybeta/backend_services/user_crud.dart';
-import 'package:toddlyybeta/baby_profile.dart';
+import 'package:toddlyybeta/screens/baby_profile.dart';
 
-import 'amplifyconfiguration.dart';
 
 class LoginPage extends StatefulHookWidget {
   const LoginPage({super.key});
@@ -135,6 +131,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await Amplify.Auth.signOut();
       userSignedIn.setUserCurrentState(false);
+      userSignedIn.setUsername("");
       debugPrint("User signed out");
     } on AuthException catch (e) {}
   }
@@ -154,12 +151,14 @@ class _LoginPageState extends State<LoginPage> {
         password: "admin**ADMIN12",
       );
 
-      userSignedIn.setUserCurrentState(result.isSignedIn);
-
-      if (result.isSignedIn)
+      if (result.isSignedIn) {
+        var currentUser = await Amplify.Auth.getCurrentUser();
+        String username = currentUser.userId;
+        userSignedIn.setUsername(username);
+        userSignedIn.setUserCurrentState(result.isSignedIn);
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => UserProfileScreen()));
-      else {
+            MaterialPageRoute(builder: (context) => BabyProfileScreen()));
+      } else {
         showDialog<void>(
           context: context,
           builder: (context) => AlertDialog(
@@ -191,6 +190,8 @@ class _LoginPageState extends State<LoginPage> {
                     if (result.isSignedIn) {
                       var currentUser = await Amplify.Auth.getCurrentUser();
                       String username = currentUser.userId;
+                      userSignedIn.setUserCurrentState(result.isSignedIn);
+                      userSignedIn.setUsername(username);
 
                       //push user to DynamoDB
                       UserCRUDService userCRUDService = new UserCRUDService();

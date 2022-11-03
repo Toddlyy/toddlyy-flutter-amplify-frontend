@@ -7,10 +7,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:toddlyybeta/login_page.dart';
+import 'package:toddlyybeta/screens/login_page.dart';
 import 'package:toddlyybeta/user_profile.dart';
 import 'package:toddlyybeta/providers.dart';
-import 'amplifyconfiguration.dart';
+import '../amplifyconfiguration.dart';
 
 import 'package:toddlyybeta/main.dart';
 

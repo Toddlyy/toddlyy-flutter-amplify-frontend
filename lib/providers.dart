@@ -6,6 +6,7 @@ final UserLoggedInProvider =
 
 class UserLoggedIn extends ChangeNotifier {
   bool isUserSignedIn = false;
+  String usernameSession = "";
 
   void setUserCurrentState(userState) {
     isUserSignedIn = userState;
@@ -14,5 +15,14 @@ class UserLoggedIn extends ChangeNotifier {
 
   bool getUserCurrentState() {
     return isUserSignedIn;
+  }
+
+  void setUsername(username) {
+    usernameSession = username;
+    notifyListeners();
+  }
+
+  String getUsername() {
+    return usernameSession;
   }
 }
