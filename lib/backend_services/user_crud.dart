@@ -10,6 +10,7 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:toddlyybeta/models/baby_model.dart';
+import 'package:toddlyybeta/models/user_model.dart';
 import 'package:toddlyybeta/user_profile.dart';
 import 'package:http/http.dart' as http;
 
@@ -35,6 +36,50 @@ class UserCRUDService {
           "firstName": firstName,
           "lastName": lastName
         }));
+  }
+
+  Future<UserDetails> displayUserProfile(String username) async {
+    var getUserURI = Uri.parse(userCRUDURI + "?username=" + username);
+    try {
+      final response = await http.get(getUserURI, headers: <String, String>{
+        'Content-Type': 'application/json',
+        "Accept": "*/*",
+        'authorizationToken': authToken
+      });
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+
+      String _firstName = extractedData["firstName"];
+      String _lastName = extractedData["lastName"]??"";
+      String _phoneNo = extractedData["phoneNo"];
+      String _gmail = extractedData["gmail"]??"";
+      String _address = extractedData["address"]??"";
+
+      UserDetails userDetails = UserDetails(
+          firstName: _firstName,
+          lastName: _lastName,
+          phoneNo: _phoneNo,
+          gmail: _gmail,
+          address: _address);
+      return userDetails;
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  Future<void> editUserProfile(
+      String username, Map<String, String> updatedUserValues) async {
+    var editUserURI = Uri.parse(userCRUDURI);
+
+    updatedUserValues.forEach((key, value) async {
+      final response = await http.patch(editUserURI,
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+            "Accept": "*/*",
+            'authorizationToken': authToken
+          },
+          body: jsonEncode(
+              {"username": username, "updateKey": key, "updateValue": value}));
+    });
   }
 
   Future<void> createBabyUser(String username, String babyFirstName,

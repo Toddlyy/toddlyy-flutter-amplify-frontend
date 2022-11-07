@@ -11,6 +11,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:toddlyybeta/screens/baby_profile.dart';
 import 'package:toddlyybeta/screens/display_baby_profile.dart';
 import 'package:toddlyybeta/screens/edit_baby_profile.dart';
+import 'package:toddlyybeta/screens/edit_user_profile.dart';
+import 'package:toddlyybeta/screens/display_user_profile.dart';
 
 void main() => runApp(ProviderScope(child: MainApp()));
 
@@ -69,7 +71,7 @@ class _MainAppState extends State<MainApp> {
             body: _amplifyConfigured
                 ? checkAuthStatus
                     ? userLoggedIn.getUserCurrentState()
-                        ? EditProfilePage()
+                        ? DisplayUserProfilePage()
                         : LoginPage()
                     : SignUpPage()
                 : Text('Loading')),
