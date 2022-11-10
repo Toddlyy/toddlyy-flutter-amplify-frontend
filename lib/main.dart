@@ -6,6 +6,7 @@ import 'package:toddlyybeta/providers.dart';
 import 'package:toddlyybeta/screens/signup_page.dart';
 import 'package:toddlyybeta/user_profile.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:toddlyybeta/widgets/circular_progress.dart';
 import 'amplifyconfiguration.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:toddlyybeta/screens/baby_profile.dart';
@@ -13,6 +14,7 @@ import 'package:toddlyybeta/screens/display_baby_profile.dart';
 import 'package:toddlyybeta/screens/edit_baby_profile.dart';
 import 'package:toddlyybeta/screens/edit_user_profile.dart';
 import 'package:toddlyybeta/screens/display_user_profile.dart';
+import 'package:toddlyybeta/screens/bottom_navbar.dart';
 
 void main() => runApp(ProviderScope(child: MainApp()));
 
@@ -63,21 +65,22 @@ class _MainAppState extends State<MainApp> {
     userLoggedIn = useProvider(UserLoggedInProvider);
 
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-            appBar: AppBar(
-              title: Text('Toddlyy'),
-            ),
-            body: _amplifyConfigured
-                ? checkAuthStatus
-                    ? userLoggedIn.getUserCurrentState()
-                        ? DisplayUserProfilePage()
-                        : LoginPage()
-                    : SignUpPage()
-                : Text('Loading')),
-        routes: {
-          BabyProfileScreen.routeName: (ctx) => UserProfileScreen(),
-        });
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+          appBar: AppBar(
+            title: Text('Toddlyy'),
+          ),
+          body: _amplifyConfigured
+              ? checkAuthStatus
+                  ? userLoggedIn.getUserCurrentState()
+                      // ? BottomNavBar(
+                      //     currentScreen: 0,
+                      //   )
+                      ? BottomNavBar(currentScreen: 0)
+                      : LoginPage()
+                  : SignUpPage()
+              : Text('Loading')),
+    );
   }
 
   Future<void> signOutUser() async {

@@ -116,7 +116,7 @@ class UserCRUDService {
       });
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
 
-      final babyList = extractedData["babies"];
+      final babyList = extractedData["babies"]??[];
       List<BabyDetails> babyDetails = [];
       for (final baby in babyList) {
         babyDetails.add(BabyDetails(
