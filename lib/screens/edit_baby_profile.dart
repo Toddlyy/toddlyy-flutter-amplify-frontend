@@ -5,6 +5,8 @@ import 'package:toddlyybeta/providers.dart';
 import 'package:toddlyybeta/backend_services/user_crud.dart';
 import 'package:toddlyybeta/models/baby_model.dart';
 import 'package:toddlyybeta/widgets/date_of_birth_widget.dart';
+import 'package:toddlyybeta/screens/bottom_navbar.dart';
+import 'package:toddlyybeta/widgets/circular_progress.dart';
 
 class EditBabyProfilePage extends StatefulHookWidget {
   @override
@@ -258,7 +260,14 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                                         borderRadius:
                                             BorderRadius.circular(20)),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => BottomNavBar(
+                                                  currentScreen: 0,
+                                                )));
+                                  },
                                   child: Text("CANCEL",
                                       style: TextStyle(
                                           fontSize: 14,
@@ -297,6 +306,12 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                                             babyDetails.dob,
                                             babyDetails.relation,
                                             babyDetails.gender);
+                                          
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CircularIndicator(nextScreenIndex: 1,)));
                                       }
                                     } else {
                                       debugPrint(

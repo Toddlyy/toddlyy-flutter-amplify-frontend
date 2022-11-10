@@ -6,6 +6,7 @@ import 'package:toddlyybeta/providers.dart';
 import 'package:toddlyybeta/backend_services/user_crud.dart';
 import 'package:toddlyybeta/models/baby_model.dart';
 import 'package:toddlyybeta/widgets/date_of_birth_widget.dart';
+import 'package:toddlyybeta/screens/edit_user_profile.dart';
 
 class DisplayUserProfilePage extends StatefulHookWidget {
   @override
@@ -52,55 +53,69 @@ class _DisplayUserProfilePageState extends State<DisplayUserProfilePage> {
                         //   },
                         child: ListView(
                           children: [
-                            Text(
-                              "User Profile",
-                              style: TextStyle(
-                                  fontSize: 25, fontWeight: FontWeight.w500),
+                            Row(
+                              children: [
+                                Text(
+                                  "User Profile",
+                                  style: TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Spacer(),
+                                IconButton(
+                                  icon: const Icon(Icons.edit),
+                                  // padding:EdgeInsets.only(left: 150.0),
+                                  iconSize: 30,
+                                  color: Colors.deepOrange,
+
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditUserProfilePage()));
+                                  },
+                                ),
+                              ],
                             ),
                             SizedBox(
                               height: 15,
                             ),
-
                             Column(children: <Widget>[
                               TextFormField(
                                 readOnly: true,
-                                  controller: _firstNameController,
-                                  decoration:
-                                      InputDecoration(labelText: 'First Name'),
-                                  
-                                  ),
+                                controller: _firstNameController,
+                                decoration:
+                                    InputDecoration(labelText: 'First Name'),
+                              ),
                               TextFormField(
                                 readOnly: true,
-                                  controller: _lastNameController,
-                                  decoration:
-                                      InputDecoration(labelText: 'Last Name'),
-                                  
-                                  ),
-                              TextFormField(
-                                  readOnly: true,
-                                  controller: _phoneNoController,
-                                  decoration:
-                                      InputDecoration(labelText: 'Phone No'),
-                                  ),
+                                controller: _lastNameController,
+                                decoration:
+                                    InputDecoration(labelText: 'Last Name'),
+                              ),
                               TextFormField(
                                 readOnly: true,
-                                  controller: _gmailController,
-                                  decoration:
-                                      InputDecoration(labelText: 'Gmail'),
-                                  ),
+                                controller: _phoneNoController,
+                                decoration:
+                                    InputDecoration(labelText: 'Phone No'),
+                              ),
                               TextFormField(
                                 readOnly: true,
-                                  controller: _addressController,
-                                  decoration:
-                                      InputDecoration(labelText: 'Address'),
-                                  
-                                  maxLines: 4,
-                                  ),
+                                controller: _gmailController,
+                                decoration: InputDecoration(labelText: 'Gmail'),
+                              ),
+                              TextFormField(
+                                readOnly: true,
+                                controller: _addressController,
+                                decoration:
+                                    InputDecoration(labelText: 'Address'),
+                                maxLines: 4,
+                              ),
                             ]),
                             SizedBox(
                               height: 35,
                             ),
-                            
                           ],
                         ),
                         // )

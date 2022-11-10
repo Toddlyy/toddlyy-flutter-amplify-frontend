@@ -114,7 +114,7 @@ class _BabyProfileScreenState extends State<BabyProfileScreen> {
                         .toList(),
                     onChanged: (val) {
                       // setState(() {
-                        _selectedGender = val as String;
+                      _selectedGender = val as String;
                       // });
                     },
                     icon: const Icon(

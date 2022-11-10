@@ -6,6 +6,8 @@ import 'package:toddlyybeta/providers.dart';
 import 'package:toddlyybeta/backend_services/user_crud.dart';
 import 'package:toddlyybeta/models/baby_model.dart';
 import 'package:toddlyybeta/widgets/date_of_birth_widget.dart';
+import 'package:toddlyybeta/screens/bottom_navbar.dart';
+import 'package:toddlyybeta/widgets/circular_progress.dart';
 
 class EditUserProfilePage extends StatefulHookWidget {
   @override
@@ -199,7 +201,14 @@ class _EditUserProfilePageState extends State<EditUserProfilePage> {
                                         borderRadius:
                                             BorderRadius.circular(20)),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => BottomNavBar(
+                                                  currentScreen: 0,
+                                                )));
+                                  },
                                   child: Text("CANCEL",
                                       style: TextStyle(
                                           fontSize: 14,
@@ -238,6 +247,27 @@ class _EditUserProfilePageState extends State<EditUserProfilePage> {
                                         userCRUDService.editUserProfile(
                                             username, updatedDetails);
                                       }
+                                      Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CircularIndicator(nextScreenIndex: 2,)));
+
+                                      // Future.delayed(Duration(seconds: 15), () {
+                                      //   CircularProgressIndicator();
+                                      //   Navigator.push(
+                                      //       context,
+                                      //       MaterialPageRoute(
+                                      //           builder: (context) =>
+                                      //               BottomNavBar(
+                                      //                   currentScreen: 2)));
+                                      // });
+                                      // Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //         builder: (context) =>
+                                      //             BottomNavBar(
+                                      //                 currentScreen: 2)));
                                     } else {
                                       debugPrint(
                                           "User not logged in still edit Baby Info");

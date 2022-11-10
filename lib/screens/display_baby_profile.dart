@@ -4,6 +4,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:toddlyybeta/providers.dart';
 import 'package:toddlyybeta/backend_services/user_crud.dart';
 import 'package:toddlyybeta/models/baby_model.dart';
+import 'package:toddlyybeta/screens/fill_baby_profile.dart';
+import 'package:toddlyybeta/widgets/date_of_birth_widget.dart';
+
+import 'package:toddlyybeta/screens/edit_baby_profile.dart';
 
 class DisplayBabyProfileScreen extends StatefulHookWidget {
   const DisplayBabyProfileScreen({super.key});
@@ -25,6 +29,12 @@ class _DisplayBabyProfileScreenState extends State<DisplayBabyProfileScreen> {
     usernameProvider = useProvider(UserLoggedInProvider);
     String username = usernameProvider.getUsername();
 
+    TextEditingController _babyFirstNameController = TextEditingController();
+    TextEditingController _babyLastNameController = TextEditingController();
+    TextEditingController _genderController = TextEditingController();
+    TextEditingController _relationController = TextEditingController();
+    TextEditingController _dobController = TextEditingController();
+
     if (usernameProvider.getUserCurrentState() && username != "") {
       UserCRUDService userCRUDService = new UserCRUDService();
       return Scaffold(
@@ -36,73 +46,104 @@ class _DisplayBabyProfileScreenState extends State<DisplayBabyProfileScreen> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   List<BabyDetails> babyDetails = snapshot.data!;
-                  //final babyDetails = snapshot.data;
-                  return ListView.builder(
-                      itemCount: 1,
-                      itemBuilder: (ctx, index) {
-                        // return Text(babyDetails[0].babyFirstName);
-                        // return Card(margin: EdgeInsets.symmetric(horizontal:15, vertical:4),
-                        // Padding(padding: EdgeInsets.all(8),
-                        // children:[Text(babyDetails[0].babyFirstName),
-                        // Text(babyDetails[0].babyLastName)];
-                        return Card(
-                            elevation: 50,
-                            shadowColor: Colors.black,
-                            color: Colors.orangeAccent[100],
-                            child: SizedBox(
-                                width: 300,
-                                height: 200,
-                                child: Padding(
-                                    padding: const EdgeInsets.all(20.0),
-                                    child: Column(
-                                      children: [
-                                        const SizedBox(
-                                          height: 10,
-                                        ), //SizedBox
-                                        Text(
-                                          'Name :  ' +
-                                              babyDetails[0].babyFirstName +
-                                              " " +
-                                              babyDetails[0].babyLastName,
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.orange[900],
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                          //Textstyle
-                                        ),
-                                        Text(
-                                          'Date of Birth :  ' +
-                                              babyDetails[0].dob,
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.orange[900],
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                          //Textstyle
-                                        ),
-                                        Text(
-                                          'Gender :  ' + babyDetails[0].gender,
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.orange[900],
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                          //Textstyle
-                                        ),
-                                        Text(
-                                          'Your relation :  ' +
-                                              babyDetails[0].relation,
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.orange[900],
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                          //Textstyle
-                                        )
-                                      ],
-                                    ))));
-                      });
+                  if (babyDetails.length == 0) {
+                    _babyFirstNameController.text = "";
+                    _babyLastNameController.text = "";
+                    _dobController.text = "";
+                    _relationController.text = "";
+                    _genderController.text = "";
+Future.delayed(Duration.zero, () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => FillBabyProfilePage()));
+                            });
+                    return CircularProgressIndicator();
+                  } else {
+                    _babyFirstNameController.text =
+                        babyDetails[0].babyFirstName;
+                    _babyLastNameController.text = babyDetails[0].babyLastName;
+
+                    // _dateOfBirthController.text = babyDetails[0].dob;
+                    _dobController.text = babyDetails[0].dob;
+                    _relationController.text = babyDetails[0].relation;
+                    _genderController.text = babyDetails[0].gender;
+
+                    return Container(
+                        padding: EdgeInsets.only(left: 16, top: 25, right: 16),
+                        child: ListView(children: [
+                          Row(
+                            children: [
+                              Text(
+                                "Baby Profile",
+                                style: TextStyle(
+                                    fontSize: 25, fontWeight: FontWeight.w500),
+                              ),
+                              Spacer(),
+                              IconButton(
+                                icon: const Icon(Icons.edit),
+                                // padding:EdgeInsets.only(left: 150.0),
+                                iconSize: 30,
+                                color: Colors.deepOrange,
+
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              EditBabyProfilePage()));
+                                },
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Column(
+                            children: <Widget>[
+                              TextField(
+                                readOnly: true,
+                                controller: _babyFirstNameController,
+                                decoration: InputDecoration(
+                                    labelText: 'First Name of Baby'),
+                              ),
+                              TextField(
+                                readOnly: true,
+                                controller: _babyLastNameController,
+                                decoration: InputDecoration(
+                                    labelText: 'Last Name of Baby'),
+                              ),
+                              TextField(
+                                readOnly: true,
+                                controller: _dobController,
+                                decoration:
+                                    InputDecoration(labelText: 'Date of Birth'),
+                              ),
+                              TextField(
+                                readOnly: true,
+                                controller: _genderController,
+                                decoration:
+                                    InputDecoration(labelText: 'Gender'),
+                              ),
+                              TextField(
+                                readOnly: true,
+                                controller: _relationController,
+                                decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                        color: Colors.orange,
+                                        Icons.accessibility_new_rounded),
+                                    labelText: 'Relation with child'),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 35,
+                          ),
+
+                          // )
+                          // ,
+                        ]));
+                  }
                 } else
                   return CircularProgressIndicator();
               }));

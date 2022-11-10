@@ -2,12 +2,12 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:toddlyybeta/providers.dart';
+import 'package:toddlyybeta/screens/bottom_navbar.dart';
 import 'package:toddlyybeta/user_profile.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:toddlyybeta/backend_services/user_crud.dart';
 import 'package:toddlyybeta/screens/baby_profile.dart';
-
 
 class LoginPage extends StatefulHookWidget {
   const LoginPage({super.key});
@@ -139,82 +139,84 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _signInUser(String phoneNumber, String firstName,
       String lastName, userSignedIn) async {
     await signOutUser();
-    if (false)
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => UserProfileScreen()));
 
-    // //false until verified with OTP as well
-    else {
-      print('Not signed in so sending activation code to sign in');
-      final result = await Amplify.Auth.signIn(
-        username: phoneNumber,
-        password: "admin**ADMIN12",
-      );
+    print('Not signed in so sending activation code to sign in');
+    final result = await Amplify.Auth.signIn(
+      username: phoneNumber,
+      password: "admin**ADMIN12",
+    );
 
-      if (result.isSignedIn) {
-        var currentUser = await Amplify.Auth.getCurrentUser();
-        String username = currentUser.userId;
-        userSignedIn.setUsername(username);
-        userSignedIn.setUserCurrentState(result.isSignedIn);
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => BabyProfileScreen()));
-      } else {
-        showDialog<void>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Confirm the user'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text('Check your phone number and enter the code below'),
-                OutlinedAutomatedNextFocusableTextFormField(
-                  controller: _activationCodeController,
-                  padding: const EdgeInsets.only(top: 16),
-                  labelText: 'Activation Code',
-                  inputType: TextInputType.number,
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Dismiss'),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-              TextButton(
-                child: const Text('Confirm'),
-                onPressed: () {
-                  //Confirms if the sent OTP is correct
-                  final result = Amplify.Auth.confirmSignIn(
-                    confirmationValue: _activationCodeController.text,
-                  ).then((result) async {
-                    if (result.isSignedIn) {
-                      var currentUser = await Amplify.Auth.getCurrentUser();
-                      String username = currentUser.userId;
-                      userSignedIn.setUserCurrentState(result.isSignedIn);
-                      userSignedIn.setUsername(username);
-
-                      //push user to DynamoDB
-                      UserCRUDService userCRUDService = new UserCRUDService();
-                      userCRUDService.createUser(
-                          username, phoneNumber, firstName, lastName);
-                      Navigator.of(context).pop();
-                      // fetchAuthSession();
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => UserProfileScreen()));
-                      Navigator.of(context)
-                          .pushReplacementNamed(BabyProfileScreen.routeName);
-                    } else {
-                      debugPrint("Not signed in");
-                    }
-                  });
-                },
+    if (result.isSignedIn) {
+      var currentUser = await Amplify.Auth.getCurrentUser();
+      String username = currentUser.userId;
+      userSignedIn.setUsername(username);
+      userSignedIn.setUserCurrentState(result.isSignedIn);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => BottomNavBar(
+                    currentScreen: 0,
+                  )));
+    } else {
+      showDialog<void>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Confirm the user'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('Check your phone number and enter the code below'),
+              OutlinedAutomatedNextFocusableTextFormField(
+                controller: _activationCodeController,
+                padding: const EdgeInsets.only(top: 16),
+                labelText: 'Activation Code',
+                inputType: TextInputType.number,
               ),
             ],
           ),
-        );
-      }
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Dismiss'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: const Text('Confirm'),
+              onPressed: () {
+                //Confirms if the sent OTP is correct
+                final result = Amplify.Auth.confirmSignIn(
+                  confirmationValue: _activationCodeController.text,
+                ).then((result) async {
+                  if (result.isSignedIn) {
+                    var currentUser = await Amplify.Auth.getCurrentUser();
+                    String username = currentUser.userId;
+                    userSignedIn.setUserCurrentState(result.isSignedIn);
+                    userSignedIn.setUsername(username);
+
+                    //push user to DynamoDB
+                    UserCRUDService userCRUDService = new UserCRUDService();
+                    userCRUDService.createUser(
+                        username, phoneNumber, firstName, lastName);
+                    Navigator.of(context).pop();
+                    // fetchAuthSession();
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => UserProfileScreen()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => BottomNavBar(
+                                  currentScreen: 0,
+                                )));
+                  } else {
+                    debugPrint("Not signed in");
+                  }
+                });
+              },
+            ),
+          ],
+        ),
+      );
     }
   }
 }
