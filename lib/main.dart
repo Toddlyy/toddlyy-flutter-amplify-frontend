@@ -1,5 +1,6 @@
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/material.dart';
 import 'package:toddlyybeta/screens/login_page.dart';
 import 'package:toddlyybeta/providers.dart';
@@ -39,9 +40,10 @@ class _MainAppState extends State<MainApp> {
 
   Future<void> _configureAmplify() async {
     final auth = AmplifyAuthCognito();
+    final s3 = AmplifyStorageS3();
 
     // Use addPlugins function to add more than one Amplify plugins
-    await Amplify.addPlugin(auth);
+    await Amplify.addPlugins([auth, s3]);
     bool ans = userLoggedIn.getUserCurrentState();
     try {
       await Amplify.configure(amplifyconfig);

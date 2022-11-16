@@ -1,0 +1,12 @@
+{
+  "resourceName": "toddlyyresource",
+  "policyUUID": "49297a4c",
+  "bucketName": "toddlyybetabucket",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "READ"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

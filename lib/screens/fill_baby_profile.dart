@@ -237,7 +237,7 @@ class _FillBabyProfilePageState extends State<FillBabyProfilePage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => CircularIndicator(
-                                      nextScreenIndex: 2,
+                                      nextScreenIndex: 1,
                                     )));
                       }
                     } else {
