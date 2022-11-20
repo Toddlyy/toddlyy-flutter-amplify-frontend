@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:toddlyybeta/screens/display_baby_profile.dart';
 import 'package:toddlyybeta/screens/display_user_profile.dart';
+import 'package:toddlyybeta/screens/list_daycares.dart';
 
 class BottomNavBar extends StatefulWidget {
   final int currentScreen;
@@ -12,7 +13,7 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   final screens = [
-    Text('This is Home Page'),
+    ListDaycares(),
     DisplayBabyProfileScreen(),
     DisplayUserProfilePage()
   ];
