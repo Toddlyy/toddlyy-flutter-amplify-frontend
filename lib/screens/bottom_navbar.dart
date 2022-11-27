@@ -3,6 +3,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:toddlyybeta/screens/display_baby_profile.dart';
 import 'package:toddlyybeta/screens/display_user_profile.dart';
 import 'package:toddlyybeta/screens/list_daycares.dart';
+import 'package:toddlyybeta/screens/show_daycare_details.dart';
 
 class BottomNavBar extends StatefulWidget {
   final int currentScreen;
