@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toddlyybeta/backend_services/daycare_crud.dart';
 import 'package:toddlyybeta/models/daycare_model.dart';
+import 'package:toddlyybeta/screens/book_slot.dart';
 
 class ShowDaycareDetails extends StatefulWidget {
   final String daycareID;
@@ -149,11 +150,14 @@ class _ShowDaycareDetailsState extends State<ShowDaycareDetails>
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) =>
-                          //             CircularIndicator(nextScreenIndex: 1,)));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BookSlot(
+                                        daycareName: daycareDetails.daycareName,
+                                        daycareID: daycareDetails.daycareID,
+                                        charges: daycareDetails.charges,
+                                      )));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.deepOrangeAccent,
@@ -176,7 +180,7 @@ class _ShowDaycareDetailsState extends State<ShowDaycareDetails>
               } else
                 return CircularProgressIndicator();
             }));
-    ;
+    
   }
 
   Widget getTextWidgets(List<dynamic> features) {

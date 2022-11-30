@@ -14,6 +14,7 @@ class DaycareDetails with ChangeNotifier {
   late bool openOnWeekends;
   late String region;
   late String phoneNo;
+  late List<dynamic> charges;
 
   DaycareDetails(
       {required this.daycareName,
@@ -27,5 +28,6 @@ class DaycareDetails with ChangeNotifier {
       required this.timeSlots,
       this.openOnWeekends = true,
       required this.region,
-      required this.phoneNo});
+      required this.phoneNo,
+      required this.charges});
 }
