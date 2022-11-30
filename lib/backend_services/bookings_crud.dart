@@ -39,98 +39,22 @@ class BookingCRUDService {
       throw (error);
     }
   }
+
+  Future<List<dynamic>> listUpcomingBookings(String username) async {
+    try {
+      var listUpcomingBookingsURI =
+          Uri.parse(bookingsCRUDURI + "?username=" + username);
+      final response =
+          await http.get(listUpcomingBookingsURI, headers: <String, String>{
+        'Content-Type': 'application/json',
+        "Accept": "*/*",
+        'authorizationToken': authToken
+      });
+
+      final upcomingBookings = json.decode(response.body) as List<dynamic>;
+      return upcomingBookings;
+    } catch (error) {
+      throw (error);
+    }
+  }
 }
-  // Future<UserDetails> displayUserProfile(String username) async {
-  //   var getUserURI = Uri.parse(userCRUDURI + "?username=" + username);
-  //   try {
-  //     final response = await http.get(getUserURI, headers: <String, String>{
-  //       'Content-Type': 'application/json',
-  //       "Accept": "*/*",
-  //       'authorizationToken': authToken
-  //     });
-  //     final extractedData = json.decode(response.body) as Map<String, dynamic>;
-
-  //     String _firstName = extractedData["firstName"];
-  //     String _lastName = extractedData["lastName"]??"";
-  //     String _phoneNo = extractedData["phoneNo"];
-  //     String _gmail = extractedData["gmail"]??"";
-  //     String _address = extractedData["address"]??"";
-
-  //     UserDetails userDetails = UserDetails(
-  //         firstName: _firstName,
-  //         lastName: _lastName,
-  //         phoneNo: _phoneNo,
-  //         gmail: _gmail,
-  //         address: _address);
-  //     return userDetails;
-  //   } catch (error) {
-  //     throw (error);
-  //   }
-  // }
-
-  // Future<void> editUserProfile(
-  //     String username, Map<String, String> updatedUserValues) async {
-  //   var editUserURI = Uri.parse(userCRUDURI);
-
-  //   updatedUserValues.forEach((key, value) async {
-  //     final response = await http.patch(editUserURI,
-  //         headers: <String, String>{
-  //           'Content-Type': 'application/json',
-  //           "Accept": "*/*",
-  //           'authorizationToken': authToken
-  //         },
-  //         body: jsonEncode(
-  //             {"username": username, "updateKey": key, "updateValue": value}));
-  //   });
-  // }
-
-  // Future<void> createBabyUser(String username, String babyFirstName,
-  //     String babyLastName, String dob, String relation, String gender) async {
-  //   var createBabyURI = Uri.parse(userCRUDURI);
-  //   var babiesList = [];
-  //   var babyInfo = {};
-  //   babyInfo["firstName"] = babyFirstName;
-  //   babyInfo["lastName"] = babyLastName;
-  //   babyInfo["dob"] = dob;
-  //   babyInfo["relation"] = relation;
-  //   babyInfo["gender"] = gender;
-  //   babiesList.add(babyInfo);
-  //   final response = await http.patch(createBabyURI,
-  //       headers: <String, String>{
-  //         'Content-Type': 'application/json',
-  //         "Accept": "*/*",
-  //         'authorizationToken': authToken
-  //       },
-  //       body: jsonEncode({
-  //         "username": username,
-  //         "updateKey": "babies",
-  //         "updateValue": babiesList
-  //       }));
-  // }
-
-  // Future<List<BabyDetails>> displayBabyProfile(String username) async {
-  //   var getUserURI = Uri.parse(userCRUDURI + "?username=" + username);
-  //   try {
-  //     final response = await http.get(getUserURI, headers: <String, String>{
-  //       'Content-Type': 'application/json',
-  //       "Accept": "*/*",
-  //       'authorizationToken': authToken
-  //     });
-  //     final extractedData = json.decode(response.body) as Map<String, dynamic>;
-
-  //     final babyList = extractedData["babies"]??[];
-  //     List<BabyDetails> babyDetails = [];
-  //     for (final baby in babyList) {
-  //       babyDetails.add(BabyDetails(
-  //           babyFirstName: baby['firstName']!,
-  //           babyLastName: baby['lastName']!,
-  //           dob: baby['dob']!,
-  //           relation: baby['relation']!,
-  //           gender: baby['gender']!));
-  //     }
-  //     return babyDetails;
-  //   } catch (error) {
-  //     throw (error);
-  //   }
-  // }
-// }
