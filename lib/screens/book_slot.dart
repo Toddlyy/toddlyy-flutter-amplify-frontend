@@ -8,6 +8,7 @@ import 'package:toddlyybeta/models/baby_model.dart';
 import 'package:toddlyybeta/widgets/outlined_next_focusable_textform_field.dart';
 import 'package:intl/intl.dart';
 import 'package:toddlyybeta/screens/bottom_navbar.dart';
+import 'package:toddlyybeta/widgets/circular_progress.dart';
 
 class BookSlot extends StatefulHookWidget {
   final String daycareID;
@@ -252,9 +253,22 @@ class _BookSlotState extends State<BookSlot> {
                                       widget.daycareID,
                                       widget.daycareName,
                                       createISO8601String(pickedDate, dropTime),
-                                      createISO8601String(pickedDate, pickUpTime),
+                                      createISO8601String(
+                                          pickedDate, pickUpTime),
                                       charge!,
                                       "In process");
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          duration: const Duration(seconds: 7),
+                                          content: Text(
+                                              'Thanks for booking using Toddlyy.\nWe will be responding to you soon! \nThe booking status will also be updated on the Bookings Tab')));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              CircularIndicator(
+                                                nextScreenIndex: 1,
+                                              )));
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.deepOrangeAccent,
