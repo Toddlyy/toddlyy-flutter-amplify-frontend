@@ -52,7 +52,8 @@ class DaycareCRUDService {
           timeSlots: daycare["timeSlots"]??[],
           openOnWeekends: daycare["openOnWeekends"]??true,
           region: daycare["region"],
-          phoneNo: daycare["phoneNo"]);
+          phoneNo: daycare["phoneNo"],
+          charges: daycare["charges"]);
       return daycareDetails;
     } catch (error) {
       throw (error);
