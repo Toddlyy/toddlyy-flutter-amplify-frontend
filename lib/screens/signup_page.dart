@@ -14,7 +14,6 @@ import '../amplifyconfiguration.dart';
 
 import 'package:toddlyybeta/main.dart';
 
-
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
@@ -32,7 +31,6 @@ class _SignUpPageState extends State<SignUpPage> {
     _activationCodeController = TextEditingController();
     _phoneNumberController = TextEditingController();
 
-
     //   if (checkIfUserSignedIn() == 'true')
     //     Navigator.push(context,
     //         MaterialPageRoute(builder: (context) => UserProfileScreen()));
@@ -45,8 +43,7 @@ class _SignUpPageState extends State<SignUpPage> {
     super.dispose();
   }
 
-  Future<void> _signUpUser(
-      String phoneNumber) async {
+  Future<void> _signUpUser(String phoneNumber) async {
     try {
       final result = await Amplify.Auth.signUp(
         username: phoneNumber,
@@ -87,9 +84,8 @@ class _SignUpPageState extends State<SignUpPage> {
               Amplify.Auth.confirmSignUp(
                 username: phoneNumber,
                 confirmationCode: _activationCodeController.text,
-              ).then((result){
+              ).then((result) {
                 if (result.isSignUpComplete) {
-                
                   Navigator.of(context).pop();
                   showDialog(
                       context: context,
@@ -125,52 +121,75 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('User Sign Up'),
-        ),
-        body:
-            // FutureBuilder<void>(
-            // future: _configureAmplify(),
-            // builder: (context, snapshot) {
-            //   if (snapshot.connectionState == ConnectionState.done) {
-            // return
-            ListView(
-          children: [
-          
+      appBar: AppBar(
+        title: const Text('User Sign Up'),
+      ),
+      body:
+          // FutureBuilder<void>(
+          // future: _configureAmplify(),
+          // builder: (context, snapshot) {
+          //   if (snapshot.connectionState == ConnectionState.done) {
+          // return
+          ListView(
+        children: [
+          //TextButton(onPressed: () {}, child: Text("Hello"),),
+
+          Row(
+            children: [
+              Image.asset(
+                  height: 60,
+                  width: 60,
+                  'icons/flags/png/in.png',
+                  package: 'country_icons'),
+              Expanded(
+                child: OutlinedAutomatedNextFocusableTextFormField(
+                  controller: _phoneNumberController,
+                  labelText: 'Phone Number',
+                  inputType: TextInputType.phone,
+                ),
+              )
+            ],
+          ),
+          /*
             OutlinedAutomatedNextFocusableTextFormField(
+
               controller: _phoneNumberController,
               labelText: 'Phone Number',
               inputType: TextInputType.phone,
+              
+               
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: () async {
-                  final phoneNumber = _phoneNumberController.text;
-       
-                  if (phoneNumber.isEmpty) {
-                    debugPrint('Phone number is empty. Not ready to submit.');
-                  }  else {
-                    // if (await _signInUser(phoneNumber)) {
-                    //   Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //           builder: (context) => UserProfileScreen()));
-                    // }
-                    _signUpUser(phoneNumber);
-                  }
-                },
-                child: const Text('Sign Up'),
-              ),
+            */
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () async {
+                final phoneNumber = '+91' + _phoneNumberController.text;
+
+                if (phoneNumber.isEmpty) {
+                  debugPrint('Phone number is empty. Not ready to submit.');
+                } else {
+                  // if (await _signInUser(phoneNumber)) {
+                  //   Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //           builder: (context) => UserProfileScreen()));
+                  // }
+                  _signUpUser(phoneNumber);
+                }
+              },
+              child: const Text('Sign Up'),
             ),
-            TextButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginPage()));
-                },
-                child: Text("Already created a user? Click to Sign In"))
-          ],
-        ));
+          ),
+          TextButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => LoginPage()));
+              },
+              child: Text("Already created a user? Click to Sign In"))
+        ],
+      ),
+    );
     // }
     // if (snapshot.hasError) {
     //   return Text('Some error happened: ${snapshot.error}');

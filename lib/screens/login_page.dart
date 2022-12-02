@@ -68,16 +68,31 @@ class _LoginPageState extends State<LoginPage> {
               labelText: 'Last Name',
               inputType: TextInputType.name,
             ),
-            OutlinedAutomatedNextFocusableTextFormField(
-              controller: _phoneNumberController,
-              labelText: 'Phone Number',
-              inputType: TextInputType.phone,
-            ),
+
+
+           Row(
+            children: [
+              Image.asset(
+                  height: 60,
+                  width: 60,
+                  'icons/flags/png/in.png',
+                  package: 'country_icons'),
+              Expanded(
+                child: OutlinedAutomatedNextFocusableTextFormField(
+                  controller: _phoneNumberController,
+                  labelText: 'Phone Number',
+                  inputType: TextInputType.phone,
+                ),
+              )
+            ],
+          ),
+
+            
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: () async {
-                  final phoneNumber = _phoneNumberController.text;
+                  final phoneNumber = '+91'+_phoneNumberController.text;
                   final firstName = _firstNameController.text;
                   final lastName = _lastNameController.text;
                   if (phoneNumber.isEmpty) {
