@@ -21,6 +21,18 @@ class SignUpPage extends StatefulWidget {
   State<SignUpPage> createState() => _SignUpPageState();
 }
 
+String phoneNumber1(number) {
+  String newNumber;
+  if (number.length == 12 && number.startsWith('91')) {
+    newNumber = number.substring(2);
+  } else if (number.length == 13 && number.startsWith('+91')) {
+    newNumber = number.substring(3);
+  } else {
+    newNumber = number;
+  }
+  return newNumber;
+}
+
 class _SignUpPageState extends State<SignUpPage> {
   late final TextEditingController _activationCodeController;
   late final TextEditingController _phoneNumberController;
@@ -144,7 +156,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Expanded(
                 child: OutlinedAutomatedNextFocusableTextFormField(
                   controller: _phoneNumberController,
-                  labelText: 'Phone Number',
+                  labelText: 'Phone Number(+91)',
                   inputType: TextInputType.phone,
                 ),
               )
@@ -164,8 +176,8 @@ class _SignUpPageState extends State<SignUpPage> {
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
               onPressed: () async {
-                final phoneNumber = '+91' + _phoneNumberController.text;
-
+                final phoneNumber =
+                    '+91' + phoneNumber1(_phoneNumberController.text);
                 if (phoneNumber.isEmpty) {
                   debugPrint('Phone number is empty. Not ready to submit.');
                 } else {

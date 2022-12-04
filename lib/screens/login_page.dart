@@ -16,6 +16,18 @@ class LoginPage extends StatefulHookWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
+String phoneNumber1(number) {
+  String newNumber;
+  if (number.length == 12 && number.startsWith('91')) {
+    newNumber = number.substring(2);
+  } else if (number.length == 13 && number.startsWith('+91')) {
+    newNumber = number.substring(3);
+  } else {
+    newNumber = number;
+  }
+  return newNumber;
+}
+
 class _LoginPageState extends State<LoginPage> {
   late final TextEditingController _activationCodeController;
   late final TextEditingController _phoneNumberController;
@@ -68,31 +80,30 @@ class _LoginPageState extends State<LoginPage> {
               labelText: 'Last Name',
               inputType: TextInputType.name,
             ),
-
-
-           Row(
-            children: [
-              Image.asset(
-                  height: 60,
-                  width: 60,
-                  'icons/flags/png/in.png',
-                  package: 'country_icons'),
-              Expanded(
-                child: OutlinedAutomatedNextFocusableTextFormField(
-                  controller: _phoneNumberController,
-                  labelText: 'Phone Number',
-                  inputType: TextInputType.phone,
-                ),
-              )
-            ],
-          ),
-
-            
+            Row(
+              children: [
+                Image.asset(
+                    height: 60,
+                    width: 60,
+                    'icons/flags/png/in.png',
+                    package: 'country_icons'),
+                Expanded(
+                  child: OutlinedAutomatedNextFocusableTextFormField(
+                    controller: _phoneNumberController,
+                    labelText: 'Phone Number(+91)',
+                    inputType: TextInputType.phone,
+                  ),
+                )
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: () async {
-                  final phoneNumber = '+91'+_phoneNumberController.text;
+                  //final phoneNumber = '+91' + _phoneNumberController.text;
+                  String phoneNo = _phoneNumberController.text;
+                  String finalFunctionNumber = phoneNumber1(phoneNo);
+                  final phoneNumber = '+91' + phoneNumber1(phoneNo);
                   final firstName = _firstNameController.text;
                   final lastName = _lastNameController.text;
                   if (phoneNumber.isEmpty) {
