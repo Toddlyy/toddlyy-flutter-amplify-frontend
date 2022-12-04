@@ -40,6 +40,7 @@ dependencies:
   amplify_auth_cognito: ^0.6.8
   amplify_storage_s3: 
   hooks_riverpod: "0.13.0"
+  country_icons: ^2.0.2
   flutter_hooks: "0.16.0"
   intl:
   google_nav_bar: 
