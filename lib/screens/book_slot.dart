@@ -1,5 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:toddlyybeta/constants.dart';
 import 'package:toddlyybeta/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:toddlyybeta/backend_services/user_crud.dart';
@@ -267,7 +268,7 @@ class _BookSlotState extends State<BookSlot> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               CircularIndicator(
-                                                nextScreenIndex: 1,
+                                                nextScreenIndex: BOOKINGS_PAGE,
                                               )));
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -305,7 +306,7 @@ class _BookSlotState extends State<BookSlot> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => BottomNavBar(
-                                                currentScreen: 1,
+                                                currentScreen: BABY_PROFILE_PAGE,
                                               )));
                                 },
                                 style: ElevatedButton.styleFrom(

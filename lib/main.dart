@@ -16,6 +16,7 @@ import 'package:toddlyybeta/screens/edit_baby_profile.dart';
 import 'package:toddlyybeta/screens/edit_user_profile.dart';
 import 'package:toddlyybeta/screens/display_user_profile.dart';
 import 'package:toddlyybeta/screens/bottom_navbar.dart';
+import 'package:toddlyybeta/constants.dart';
 
 void main() => runApp(ProviderScope(child: MainApp()));
 
@@ -78,7 +79,7 @@ class _MainAppState extends State<MainApp> {
                       // ? BottomNavBar(
                       //     currentScreen: 0,
                       //   )
-                      ? BottomNavBar(currentScreen: 0)
+                      ? BottomNavBar(currentScreen: HOME_PAGE)
                       : LoginPage()
                   : SignUpPage()
               : Text('Loading')),

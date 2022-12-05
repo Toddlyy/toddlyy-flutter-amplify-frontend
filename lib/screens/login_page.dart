@@ -1,6 +1,7 @@
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:toddlyybeta/constants.dart';
 import 'package:toddlyybeta/providers.dart';
 import 'package:toddlyybeta/screens/bottom_navbar.dart';
 import 'package:toddlyybeta/user_profile.dart';
@@ -181,7 +182,7 @@ class _LoginPageState extends State<LoginPage> {
           context,
           MaterialPageRoute(
               builder: (context) => BottomNavBar(
-                    currentScreen: 0,
+                    currentScreen: HOME_PAGE,
                   )));
     } else {
       showDialog<void>(
@@ -232,7 +233,7 @@ class _LoginPageState extends State<LoginPage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => BottomNavBar(
-                                  currentScreen: 0,
+                                  currentScreen: HOME_PAGE,
                                 )));
                   } else {
                     debugPrint("Not signed in");
