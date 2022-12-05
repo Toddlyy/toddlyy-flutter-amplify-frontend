@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:toddlyybeta/constants.dart';
 import 'package:toddlyybeta/providers.dart';
 import 'package:toddlyybeta/backend_services/user_crud.dart';
 import 'package:toddlyybeta/models/baby_model.dart';
@@ -265,7 +266,7 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => BottomNavBar(
-                                                  currentScreen: 0,
+                                                  currentScreen: BABY_PROFILE_PAGE,
                                                 )));
                                   },
                                   child: Text("CANCEL",
@@ -311,7 +312,7 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    CircularIndicator(nextScreenIndex: 1,)));
+                                                    CircularIndicator(nextScreenIndex: BABY_PROFILE_PAGE,)));
                                       }
                                     } else {
                                       debugPrint(

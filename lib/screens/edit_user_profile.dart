@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:toddlyybeta/constants.dart';
 import 'package:toddlyybeta/models/user_model.dart';
 import 'package:toddlyybeta/providers.dart';
 import 'package:toddlyybeta/backend_services/user_crud.dart';
@@ -206,7 +207,7 @@ class _EditUserProfilePageState extends State<EditUserProfilePage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => BottomNavBar(
-                                                  currentScreen: 0,
+                                                  currentScreen: USER_PROFILE_PAGE,
                                                 )));
                                   },
                                   child: Text("CANCEL",
@@ -251,7 +252,7 @@ class _EditUserProfilePageState extends State<EditUserProfilePage> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    CircularIndicator(nextScreenIndex: 2,)));
+                                                    CircularIndicator(nextScreenIndex: USER_PROFILE_PAGE,)));
 
                                       // Future.delayed(Duration(seconds: 15), () {
                                       //   CircularProgressIndicator();
