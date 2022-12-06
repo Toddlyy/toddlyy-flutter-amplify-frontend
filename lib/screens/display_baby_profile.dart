@@ -58,7 +58,12 @@ Future.delayed(Duration.zero, () {
                         MaterialPageRoute(
                             builder: (context) => FillBabyProfilePage()));
                             });
-                    return CircularProgressIndicator();
+                    return SizedBox(
+       height: MediaQuery.of(context).size.height / 0.8,
+       child: Center(
+           child: CircularProgressIndicator(),
+            ),
+        );
                   } else {
                     _babyFirstNameController.text =
                         babyDetails[0].babyFirstName;
@@ -145,7 +150,12 @@ Future.delayed(Duration.zero, () {
                         ]));
                   }
                 } else
-                  return CircularProgressIndicator();
+                  return SizedBox(
+       height: MediaQuery.of(context).size.height / 0.8,
+       child: Center(
+           child: CircularProgressIndicator(),
+            ),
+        );
               }));
     } else {
       return Scaffold(

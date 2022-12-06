@@ -21,6 +21,11 @@ class _CircularIndicatorState extends State<CircularIndicator> {
               builder: (context) => BottomNavBar(currentScreen: widget.nextScreenIndex)));
     });
 
-    return Scaffold(body: CircularProgressIndicator());
+    return Scaffold(body:SizedBox(
+       height: MediaQuery.of(context).size.height / 1.3,
+       child: Center(
+           child: CircularProgressIndicator(),
+            ),
+        ),);
   }
 }

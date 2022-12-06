@@ -178,7 +178,12 @@ class _ShowDaycareDetailsState extends State<ShowDaycareDetails>
                   ),
                 );
               } else
-                return CircularProgressIndicator();
+                return SizedBox(
+       height: MediaQuery.of(context).size.height / 0.8,
+       child: Center(
+           child: CircularProgressIndicator(),
+            ),
+        );
             }));
     
   }
