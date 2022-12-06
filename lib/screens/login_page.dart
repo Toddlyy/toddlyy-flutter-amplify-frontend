@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:toddlyybeta/constants.dart';
 import 'package:toddlyybeta/providers.dart';
 import 'package:toddlyybeta/screens/bottom_navbar.dart';
+import 'package:toddlyybeta/screens/signup_page.dart';
 import 'package:toddlyybeta/user_profile.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -17,8 +18,9 @@ class LoginPage extends StatefulHookWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-String phoneNumber1(number) {
+String get10DigitPhoneNumber(number) {
   String newNumber;
+  number = number.replaceAll(' ', '');
   if (number.length == 12 && number.startsWith('91')) {
     newNumber = number.substring(2);
   } else if (number.length == 13 && number.startsWith('+91')) {
@@ -61,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
     userSignedIn = useProvider(UserLoggedInProvider);
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Sign In'),
+          title: const Text('Log In'),
         ),
         body:
             // FutureBuilder<void>(
@@ -103,15 +105,19 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () async {
                   //final phoneNumber = '+91' + _phoneNumberController.text;
                   String phoneNo = _phoneNumberController.text;
-                  String finalFunctionNumber = phoneNumber1(phoneNo);
-                  final phoneNumber = '+91' + phoneNumber1(phoneNo);
+                  final phoneNumber = '+91' + get10DigitPhoneNumber(phoneNo);
                   final firstName = _firstNameController.text;
                   final lastName = _lastNameController.text;
-                  if (phoneNumber.isEmpty) {
-                    debugPrint(
-                        'One of the fields is empty. Not ready to submit.');
+                  if (phoneNo.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        duration: const Duration(seconds: 5),
+                        content: Text(
+                            'Phone Number is empty. Not ready to submit')));
                   } else if (firstName.isEmpty) {
-                    debugPrint('First Name is empty. Not reaady to submit');
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        duration: const Duration(seconds: 5),
+                        content:
+                            Text('First Name is empty. Not ready to submit')));
                   } else {
                     // if (await _signInUser(phoneNumber)) {
                     //   Navigator.push(
@@ -122,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                     _signInUser(phoneNumber, firstName, lastName, userSignedIn);
                   }
                 },
-                child: const Text('Sign In'),
+                child: const Text('Log In'),
               ),
             ),
           ],
@@ -167,83 +173,109 @@ class _LoginPageState extends State<LoginPage> {
       String lastName, userSignedIn) async {
     await signOutUser();
 
-    print('Not signed in so sending activation code to sign in');
-    final result = await Amplify.Auth.signIn(
-      username: phoneNumber,
-      password: "admin**ADMIN12",
-    );
+    print('Not signed in so sending activation code to log in');
+    try {
+      final result = await Amplify.Auth.signIn(
+        username: phoneNumber,
+        password: "admin**ADMIN12",
+      );
 
-    if (result.isSignedIn) {
-      var currentUser = await Amplify.Auth.getCurrentUser();
-      String username = currentUser.userId;
-      userSignedIn.setUsername(username);
-      userSignedIn.setUserCurrentState(result.isSignedIn);
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => BottomNavBar(
-                    currentScreen: HOME_PAGE,
-                  )));
-    } else {
-      showDialog<void>(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Confirm the user'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('Check your phone number and enter the code below'),
-              OutlinedAutomatedNextFocusableTextFormField(
-                controller: _activationCodeController,
-                padding: const EdgeInsets.only(top: 16),
-                labelText: 'Activation Code',
-                inputType: TextInputType.number,
+      if (result.isSignedIn) {
+        var currentUser = await Amplify.Auth.getCurrentUser();
+        String username = currentUser.userId;
+        userSignedIn.setUsername(username);
+        userSignedIn.setUserCurrentState(result.isSignedIn);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => BottomNavBar(
+                      currentScreen: HOME_PAGE,
+                    )));
+      } else {
+        showDialog<void>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Confirm the user'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('Enter the activation code below'),
+                OutlinedAutomatedNextFocusableTextFormField(
+                  controller: _activationCodeController,
+                  padding: const EdgeInsets.only(top: 16),
+                  labelText: 'Activation Code',
+                  inputType: TextInputType.number,
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Dismiss'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              TextButton(
+                child: const Text('Confirm'),
+                onPressed: () async {
+                  //Confirms if the sent OTP is correct
+                  try {
+                    final result = await Amplify.Auth.confirmSignIn(
+                      confirmationValue: _activationCodeController.text,
+                    );
+                    if (result.isSignedIn) {
+                      var currentUser = await Amplify.Auth.getCurrentUser();
+                      String username = currentUser.userId;
+                      userSignedIn.setUserCurrentState(result.isSignedIn);
+                      userSignedIn.setUsername(username);
+
+                      //push user to DynamoDB
+                      UserCRUDService userCRUDService = new UserCRUDService();
+                      userCRUDService.createUser(
+                          username, phoneNumber, firstName, lastName);
+                      Navigator.of(context).pop();
+                      // fetchAuthSession();
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => UserProfileScreen()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BottomNavBar(
+                                    currentScreen: HOME_PAGE,
+                                  )));
+                    } else {
+                      debugPrint("Not signed in");
+                    }
+                  } on CodeMismatchException catch (e) {
+                    //Don't pop it(let them try with different codes)
+                    // Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        duration: const Duration(seconds: 5),
+                        content: Text(
+                            'The activation code is incorrect.\nPlease try again!')));
+                  } catch (e) {
+                    print(e);
+                  }
+                },
               ),
             ],
           ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Dismiss'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            TextButton(
-              child: const Text('Confirm'),
-              onPressed: () {
-                //Confirms if the sent OTP is correct
-                final result = Amplify.Auth.confirmSignIn(
-                  confirmationValue: _activationCodeController.text,
-                ).then((result) async {
-                  if (result.isSignedIn) {
-                    var currentUser = await Amplify.Auth.getCurrentUser();
-                    String username = currentUser.userId;
-                    userSignedIn.setUserCurrentState(result.isSignedIn);
-                    userSignedIn.setUsername(username);
-
-                    //push user to DynamoDB
-                    UserCRUDService userCRUDService = new UserCRUDService();
-                    userCRUDService.createUser(
-                        username, phoneNumber, firstName, lastName);
-                    Navigator.of(context).pop();
-                    // fetchAuthSession();
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => UserProfileScreen()));
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => BottomNavBar(
-                                  currentScreen: HOME_PAGE,
-                                )));
-                  } else {
-                    debugPrint("Not signed in");
-                  }
-                });
-              },
-            ),
-          ],
-        ),
-      );
+        );
+      }
+    } on UserNotFoundException catch (e) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => SignUpPage()));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          duration: const Duration(seconds: 5),
+          content: Text('Please create a user before Logging In')));
+    } on UserNotConfirmedException catch (e) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => SignUpPage()));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          duration: const Duration(seconds: 5),
+          content: Text('Please create a User before Logging In')));
+    } catch (e) {
+      print(e);
     }
   }
 }

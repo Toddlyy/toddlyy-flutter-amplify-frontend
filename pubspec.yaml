@@ -44,6 +44,7 @@ dependencies:
   flutter_hooks: "0.16.0"
   intl:
   google_nav_bar: 
+  amazon_cognito_identity_dart_2: 
 
 dev_dependencies:
   flutter_test:
