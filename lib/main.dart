@@ -68,8 +68,8 @@ class _MainAppState extends State<MainApp> {
     userLoggedIn = useProvider(UserLoggedInProvider);
 
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
           appBar: AppBar(
             title: Text('Toddlyy'),
           ),
@@ -82,8 +82,8 @@ class _MainAppState extends State<MainApp> {
                       ? BottomNavBar(currentScreen: HOME_PAGE)
                       : LoginPage()
                   : SignUpPage()
-              : Text('Loading')),
-    );
+              : Center(child: CircularProgressIndicator())
+        ));
   }
 
   Future<void> signOutUser() async {

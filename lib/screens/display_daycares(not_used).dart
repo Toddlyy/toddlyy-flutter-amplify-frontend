@@ -104,7 +104,12 @@ class _DisplayDaycaresScreenState extends State<DisplayDaycaresScreen> {
                                     ))));
                       });
                 } else
-                  return CircularProgressIndicator();
+                  return SizedBox(
+       height: MediaQuery.of(context).size.height / 0.8,
+       child: Center(
+           child: CircularProgressIndicator(),
+            ),
+        );
               }));
     } else {
       return Scaffold(
