@@ -13,6 +13,7 @@ import 'package:toddlyybeta/providers.dart';
 import '../amplifyconfiguration.dart';
 
 import 'package:toddlyybeta/main.dart';
+import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -21,8 +22,9 @@ class SignUpPage extends StatefulWidget {
   State<SignUpPage> createState() => _SignUpPageState();
 }
 
-String phoneNumber1(number) {
+String get10DigitPhoneNumber(number) {
   String newNumber;
+  number = number.replaceAll(' ', '');
   if (number.length == 12 && number.startsWith('91')) {
     newNumber = number.substring(2);
   } else if (number.length == 13 && number.startsWith('+91')) {
@@ -55,28 +57,15 @@ class _SignUpPageState extends State<SignUpPage> {
     super.dispose();
   }
 
-  Future<void> _signUpUser(String phoneNumber) async {
-    try {
-      final result = await Amplify.Auth.signUp(
-        username: phoneNumber,
-        password: "admin**ADMIN12",
-        options: CognitoSignUpOptions(
-          userAttributes: {
-            CognitoUserAttributeKey.phoneNumber: phoneNumber,
-          },
-        ),
-      );
-    } on AuthException catch (e) {
-      print(e.message);
-    }
-    showDialog<void>(
+  Future<void> _dialogBuilder(BuildContext context, String phoneNumber) {
+    return showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Confirm the user'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('Check your phone number and enter the code below'),
+            const Text('Please enter the activation code'),
             OutlinedAutomatedNextFocusableTextFormField(
               controller: _activationCodeController,
               padding: const EdgeInsets.only(top: 16),
@@ -88,26 +77,30 @@ class _SignUpPageState extends State<SignUpPage> {
         actions: <Widget>[
           TextButton(
             child: const Text('Dismiss'),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
           ),
           TextButton(
             child: const Text('Confirm'),
-            onPressed: () {
-              Amplify.Auth.confirmSignUp(
-                username: phoneNumber,
-                confirmationCode: _activationCodeController.text,
-              ).then((result) {
+            onPressed: () async {
+              try {
+                final result = await Amplify.Auth.confirmSignUp(
+                  username: phoneNumber,
+                  confirmationCode: _activationCodeController.text,
+                );
+
                 if (result.isSignUpComplete) {
                   Navigator.of(context).pop();
                   showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                              title: const Text('Your accout is created!'),
+                              title: const Text('Your account is created!'),
                               content: const Text(
-                                  "Thanks for creating an account, please verify your phone number once again for Signing In"),
+                                  "Thanks for creating an account, please verify your phone number once again for Logging In"),
                               actions: <Widget>[
                                 TextButton(
-                                  child: const Text('Sign In'),
+                                  child: const Text('Log In'),
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                     Navigator.push(
@@ -118,15 +111,77 @@ class _SignUpPageState extends State<SignUpPage> {
                                 ),
                               ]));
                 } else {
+                  //Never executed : it always goes to the Exception
                   Navigator.of(context).pop();
-                  debugPrint("Incorrect activation code");
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      duration: const Duration(seconds: 7),
+                      content: Text(
+                          'The activation code is incorrect.\nPlease try again')));
                 }
-              });
+              } on CodeMismatchException catch (e) {
+                //Don't pop it(let them try with different codes)
+                // Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      duration: const Duration(seconds: 5),
+                      content: Text(
+                          'The activation code is incorrect.\nPlease try again!')));
+                
+              }
+              catch(e){
+                
+              }
             },
           ),
         ],
       ),
     );
+  }
+
+  Future<void> _signUpUser(String phoneNumber) async {
+    bool USER_ALREADY_VERIFIED = false;
+    try {
+      final result = await Amplify.Auth.signUp(
+        username: phoneNumber,
+        password: "admin**ADMIN12",
+        options: CognitoSignUpOptions(
+          userAttributes: {
+            CognitoUserAttributeKey.phoneNumber: phoneNumber,
+          },
+        ),
+      );
+    } on UsernameExistsException catch (e) {
+      try {
+        final String status;
+        final userPool = CognitoUserPool(
+          'ap-south-1_hRGKTCYWt',
+          '7mv457jsqec41g9ts88a75ru4g',
+        );
+
+        final cognitoUser = CognitoUser(phoneNumber, userPool);
+        status = await cognitoUser.resendConfirmationCode();
+      } on CognitoClientException catch (e) {
+        print(e);
+        if (e.code == 'InvalidParameterException') {
+          USER_ALREADY_VERIFIED = true;
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              duration: const Duration(seconds: 7),
+              content: Text(
+                  'You have already created an account using this phone number. \nPlease directly login')));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => LoginPage()));
+        }
+      } catch (e) {
+        print(e);
+      }
+    } on AuthException catch (e) {
+      print(e.message);
+    } on Exception catch (e) {
+      print(e);
+    } finally {
+      if (USER_ALREADY_VERIFIED == false) {
+        _dialogBuilder(context, phoneNumber);
+      }
+    }
     // }
   }
 
@@ -177,7 +232,7 @@ class _SignUpPageState extends State<SignUpPage> {
             child: ElevatedButton(
               onPressed: () async {
                 final phoneNumber =
-                    '+91' + phoneNumber1(_phoneNumberController.text);
+                    '+91' + get10DigitPhoneNumber(_phoneNumberController.text);
                 if (phoneNumber.isEmpty) {
                   debugPrint('Phone number is empty. Not ready to submit.');
                 } else {
@@ -198,7 +253,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => LoginPage()));
               },
-              child: Text("Already created a user? Click to Sign In"))
+              child: Text("Already created a user? Click to Log In"))
         ],
       ),
     );
