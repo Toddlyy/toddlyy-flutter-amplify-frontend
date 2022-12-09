@@ -22,7 +22,7 @@ class _CircularIndicatorState extends State<CircularIndicator> {
     });
 
     return Scaffold(body:SizedBox(
-       height: MediaQuery.of(context).size.height / 1.3,
+       height: MediaQuery.of(context).size.height / 0.8,
        child: Center(
            child: CircularProgressIndicator(),
             ),
