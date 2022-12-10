@@ -39,8 +39,8 @@ class _BabyProfileScreenState extends State<BabyProfileScreen> {
     usernameProvider = useProvider(UserLoggedInProvider);
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.orange,
           title: Text('Baby Profile'),
-          actions: [],
         ),
         body: Padding(
             padding: const EdgeInsets.all(16.0),

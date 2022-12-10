@@ -40,9 +40,9 @@ class _ShowDaycareDetailsState extends State<ShowDaycareDetails>
                       Text(
                         daycareDetails.daycareName,
                         style: TextStyle(
-                          color: Colors.orange,
+                          color: Colors.deepOrange,
                           fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                          fontSize: 22,
                         ),
                       ),
                       SizedBox(
@@ -54,11 +54,17 @@ class _ShowDaycareDetailsState extends State<ShowDaycareDetails>
                         child: Wrap(
                           direction: Axis.horizontal,
                           children: <Widget>[
-                            Icon(Icons.location_on, size: 20),
+                            Icon(Icons.location_on,
+                                size: 20, color: Colors.orange),
                             Text(
                               daycareDetails.address,
                               textAlign: TextAlign.left,
                               softWrap: true,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ],
                         ),
@@ -72,13 +78,19 @@ class _ShowDaycareDetailsState extends State<ShowDaycareDetails>
                         child: Wrap(
                           direction: Axis.horizontal,
                           children: <Widget>[
-                            Icon(Icons.access_time_filled_outlined, size: 18),
+                            Icon(Icons.access_time_filled_outlined,
+                                size: 18, color: Colors.orange),
                             Text(
                               daycareDetails.startTime +
                                   " - " +
                                   daycareDetails.endTime,
                               textAlign: TextAlign.center,
                               // softWrap: true,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ],
                         ),
@@ -92,11 +104,16 @@ class _ShowDaycareDetailsState extends State<ShowDaycareDetails>
                         child: Wrap(
                           direction: Axis.horizontal,
                           children: <Widget>[
-                            Icon(Icons.phone, size: 18),
+                            Icon(Icons.phone, size: 18, color: Colors.orange),
                             Text(
                               daycareDetails.phoneNo,
                               textAlign: TextAlign.center,
                               // softWrap: true,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ],
                         ),
@@ -105,11 +122,11 @@ class _ShowDaycareDetailsState extends State<ShowDaycareDetails>
                         height: 20,
                       ),
                       Material(
-                        color: Colors.orangeAccent,
+                        color: Colors.orange,
                         elevation: 3,
                         borderRadius: BorderRadius.circular(18),
                         child: Container(
-                          height: size.height / 2.5 / 2,
+                          height: size.height / 2.5 / 1.5,
                           width: size.width / 1.1,
                           child: Column(
                             children: [
@@ -179,13 +196,12 @@ class _ShowDaycareDetailsState extends State<ShowDaycareDetails>
                 );
               } else
                 return SizedBox(
-       height: MediaQuery.of(context).size.height / 0.8,
-       child: Center(
-           child: CircularProgressIndicator(),
-            ),
-        );
+                  height: MediaQuery.of(context).size.height / 0.8,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
             }));
-    
   }
 
   Widget getTextWidgets(List<dynamic> features) {
@@ -193,27 +209,19 @@ class _ShowDaycareDetailsState extends State<ShowDaycareDetails>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: features
-            .map((item) => new Text("\u2022  " + item,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
-                textAlign: TextAlign.left))
+            .map((item) => Row(children: [
+                  Icon(Icons.check, size: 18, color: Colors.green),
+                  SizedBox(width: 5),
+                  Text(
+                      // "\u2022  " +
+                      item,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      textAlign: TextAlign.left),
+                ]))
             .toList());
-  }
-}
-
-class MyBullet extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new Container(
-      height: 20.0,
-      width: 20.0,
-      decoration: new BoxDecoration(
-        color: Colors.black,
-        shape: BoxShape.circle,
-      ),
-    );
   }
 }

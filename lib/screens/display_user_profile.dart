@@ -32,6 +32,10 @@ class _DisplayUserProfilePageState extends State<DisplayUserProfilePage> {
     if (usernameProvider.getUserCurrentState() && username != "") {
       UserCRUDService userCRUDService = new UserCRUDService();
       return Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.orange,
+                title: Text('User Profile'),
+              ),
               body: FutureBuilder(
                   future: userCRUDService.displayUserProfile(username),
                   builder: (context, snapshot) {
@@ -55,12 +59,6 @@ class _DisplayUserProfilePageState extends State<DisplayUserProfilePage> {
                           children: [
                             Row(
                               children: [
-                                Text(
-                                  "User Profile",
-                                  style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.w500),
-                                ),
                                 Spacer(),
                                 IconButton(
                                   icon: const Icon(Icons.edit),
@@ -123,11 +121,12 @@ class _DisplayUserProfilePageState extends State<DisplayUserProfilePage> {
                       );
                     } else
                       return SizedBox(
-       height: MediaQuery.of(context).size.height / 0.8,
-       child: Center(
-           child: CircularProgressIndicator(),
-            ),
-        );;
+                        height: MediaQuery.of(context).size.height / 0.8,
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    ;
                   }))
           // )
           ;

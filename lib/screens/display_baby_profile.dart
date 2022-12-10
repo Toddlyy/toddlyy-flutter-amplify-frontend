@@ -39,8 +39,9 @@ class _DisplayBabyProfileScreenState extends State<DisplayBabyProfileScreen> {
       UserCRUDService userCRUDService = new UserCRUDService();
       return Scaffold(
           appBar: AppBar(
-              // title: Text("Toddlyy"),
-              ),
+            backgroundColor: Colors.orange,
+            title: Text('Baby Profile'),
+          ),
           body: FutureBuilder(
               future: userCRUDService.displayBabyProfile(username),
               builder: (context, snapshot) {
@@ -52,18 +53,18 @@ class _DisplayBabyProfileScreenState extends State<DisplayBabyProfileScreen> {
                     _dobController.text = "";
                     _relationController.text = "";
                     _genderController.text = "";
-Future.delayed(Duration.zero, () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => FillBabyProfilePage()));
-                            });
+                    Future.delayed(Duration.zero, () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => FillBabyProfilePage()));
+                    });
                     return SizedBox(
-       height: MediaQuery.of(context).size.height / 0.8,
-       child: Center(
-           child: CircularProgressIndicator(),
-            ),
-        );
+                      height: MediaQuery.of(context).size.height / 0.8,
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
                   } else {
                     _babyFirstNameController.text =
                         babyDetails[0].babyFirstName;
@@ -79,11 +80,6 @@ Future.delayed(Duration.zero, () {
                         child: ListView(children: [
                           Row(
                             children: [
-                              Text(
-                                "Baby Profile",
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.w500),
-                              ),
                               Spacer(),
                               IconButton(
                                 icon: const Icon(Icons.edit),
@@ -151,11 +147,11 @@ Future.delayed(Duration.zero, () {
                   }
                 } else
                   return SizedBox(
-       height: MediaQuery.of(context).size.height / 0.8,
-       child: Center(
-           child: CircularProgressIndicator(),
-            ),
-        );
+                    height: MediaQuery.of(context).size.height / 0.8,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
               }));
     } else {
       return Scaffold(

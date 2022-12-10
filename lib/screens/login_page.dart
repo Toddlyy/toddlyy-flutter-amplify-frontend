@@ -9,7 +9,6 @@ import 'package:toddlyybeta/user_profile.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:toddlyybeta/backend_services/user_crud.dart';
-import 'package:toddlyybeta/screens/baby_profile.dart';
 
 class LoginPage extends StatefulHookWidget {
   const LoginPage({super.key});
@@ -63,8 +62,9 @@ class _LoginPageState extends State<LoginPage> {
     userSignedIn = useProvider(UserLoggedInProvider);
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Log In'),
-        ),
+            backgroundColor: Colors.orange,
+            title: Text('User Log In'),
+          ),
         body:
             // FutureBuilder<void>(
             //     // future: _configureAmplify(),

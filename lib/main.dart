@@ -10,7 +10,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:toddlyybeta/widgets/circular_progress.dart';
 import 'amplifyconfiguration.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:toddlyybeta/screens/baby_profile.dart';
 import 'package:toddlyybeta/screens/display_baby_profile.dart';
 import 'package:toddlyybeta/screens/edit_baby_profile.dart';
 import 'package:toddlyybeta/screens/edit_user_profile.dart';
@@ -70,9 +69,10 @@ class _MainAppState extends State<MainApp> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          appBar: AppBar(
-            title: Text('Toddlyy'),
-          ),
+          // appBar: AppBar(
+          //   backgroundColor: Colors.ora,
+          //   title: Text('Toddlyy'),
+          // ),
           body: _amplifyConfigured
               ? checkAuthStatus
                   ? userLoggedIn.getUserCurrentState()

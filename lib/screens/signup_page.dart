@@ -189,8 +189,9 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Sign Up'),
-      ),
+            backgroundColor: Colors.orange,
+            title: Text('User Sign Up'),
+          ),
       body:
           // FutureBuilder<void>(
           // future: _configureAmplify(),

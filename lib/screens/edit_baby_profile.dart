@@ -67,6 +67,10 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
               //     ),
               //   ],
               // ),
+              appBar: AppBar(
+                backgroundColor: Colors.orange,
+                title: Text('Edit Baby Profile'),
+              ),
               body: FutureBuilder(
                   future: userCRUDService.displayBabyProfile(username),
                   builder: (context, snapshot) {
@@ -92,14 +96,6 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                         //   },
                         child: ListView(
                           children: [
-                            Text(
-                              "Edit Profile",
-                              style: TextStyle(
-                                  fontSize: 25, fontWeight: FontWeight.w500),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
                             // Center(
                             //   child: Stack(
                             //     children: [
@@ -266,7 +262,8 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => BottomNavBar(
-                                                  currentScreen: BABY_PROFILE_PAGE,
+                                                  currentScreen:
+                                                      BABY_PROFILE_PAGE,
                                                 )));
                                   },
                                   child: Text("CANCEL",
@@ -307,12 +304,15 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                                             babyDetails.dob,
                                             babyDetails.relation,
                                             babyDetails.gender);
-                                          
+
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    CircularIndicator(nextScreenIndex: BABY_PROFILE_PAGE,)));
+                                                    CircularIndicator(
+                                                      nextScreenIndex:
+                                                          BABY_PROFILE_PAGE,
+                                                    )));
                                       }
                                     } else {
                                       debugPrint(
@@ -345,11 +345,11 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                       );
                     } else
                       return SizedBox(
-       height: MediaQuery.of(context).size.height / 0.8,
-       child: Center(
-           child: CircularProgressIndicator(),
-            ),
-        );
+                        height: MediaQuery.of(context).size.height / 0.8,
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
                   }))
           // )
           ;

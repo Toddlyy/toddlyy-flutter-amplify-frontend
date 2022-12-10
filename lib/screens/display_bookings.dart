@@ -26,6 +26,10 @@ class _DisplayBookingsState extends State<DisplayBookings> {
       final size = MediaQuery.of(context).size;
 
       return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.orange,
+          title: Text('Upcoming Bookings'),
+        ),
           body: FutureBuilder(
               future: bookingCRUDService.listUpcomingBookings(username),
               builder: (context, snapshot) {
@@ -33,17 +37,6 @@ class _DisplayBookingsState extends State<DisplayBookings> {
                   bookingsList = snapshot.data!;
                   return SingleChildScrollView(
                     child: Column(children: [
-                      SizedBox(height: 20),
-                      Text(
-                        "Upcoming Bookings",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.deepOrangeAccent,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      SizedBox(height: 20),
                       bookingsListWidget(bookingsList, size),
                       SizedBox(height: 20),
                     ]),

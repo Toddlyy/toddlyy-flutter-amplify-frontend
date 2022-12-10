@@ -132,6 +132,10 @@ class _BookSlotState extends State<BookSlot> {
     if (usernameProvider.getUserCurrentState() && username != "") {
       UserCRUDService userCRUDService = new UserCRUDService();
       return Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.orange,
+                title: Text("Book Slot in " + widget.daycareName),
+              ),
               body: FutureBuilder(
                   future: userCRUDService.displayBabyProfile(username),
                   builder: (context, snapshot) {
@@ -142,17 +146,7 @@ class _BookSlotState extends State<BookSlot> {
                         return ListView(
                             padding: EdgeInsets.symmetric(
                                 vertical: 50, horizontal: 10),
-                            children: [
-                              Text(
-                                "Book Slot in " + widget.daycareName,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.orange,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
-                              SizedBox(height: 20),
+                            children: [          
                               OutlinedAutomatedNextFocusableTextFormField(
                                 // TextFormField(
                                 validator: (value) {
@@ -306,7 +300,8 @@ class _BookSlotState extends State<BookSlot> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => BottomNavBar(
-                                                currentScreen: BABY_PROFILE_PAGE,
+                                                currentScreen:
+                                                    BABY_PROFILE_PAGE,
                                               )));
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -330,11 +325,11 @@ class _BookSlotState extends State<BookSlot> {
                       }
                     } else
                       return SizedBox(
-       height: MediaQuery.of(context).size.height / 0.8,
-       child: Center(
-           child: CircularProgressIndicator(),
-            ),
-        );
+                        height: MediaQuery.of(context).size.height / 0.8,
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
                   }))
           // )
           ;
