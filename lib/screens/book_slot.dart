@@ -14,12 +14,16 @@ import 'package:toddlyybeta/widgets/circular_progress.dart';
 class BookSlot extends StatefulHookWidget {
   final String daycareID;
   final String daycareName;
+  final String startTime;
+  final String endTime;
   final List<dynamic> charges;
   const BookSlot(
       {Key? key,
       required this.daycareID,
       required this.daycareName,
-      required this.charges})
+      required this.charges,
+      required this.startTime,
+      required this.endTime})
       : super(key: key);
 
   @override
@@ -32,6 +36,7 @@ class _BookSlotState extends State<BookSlot> {
   double? charge;
   var totalHoursText = "";
   String chargeText = "";
+  String paymentText = "";
 
   TimeOfDay dropTime = TimeOfDay.now();
   TimeOfDay pickUpTime = TimeOfDay.now();
@@ -54,6 +59,7 @@ class _BookSlotState extends State<BookSlot> {
           totalHoursText =
               "Drop Time should be before Pick Up Time.\nPlease try again!";
           chargeText = "";
+          paymentText = "";
         });
       } else {
         int totalHours =
@@ -62,12 +68,15 @@ class _BookSlotState extends State<BookSlot> {
           setState(() {
             totalHoursText = "Daycare not available for these timings";
             chargeText = "";
+            paymentText = "";
           });
         } else {
           setState(() {
-            totalHoursText = "Total Hours: " + totalHours.toString();
+            totalHoursText = totalHours.toString() + " Hours";
             charge = charges[totalHours - 1];
-            chargeText = "Charges: ₹" + charge.toString();
+            chargeText = "₹" + charge.toString();
+            paymentText =
+                "*Payment to be done via cash or UPI at the daycare center";
           });
         }
       }
@@ -132,205 +141,262 @@ class _BookSlotState extends State<BookSlot> {
     if (usernameProvider.getUserCurrentState() && username != "") {
       UserCRUDService userCRUDService = new UserCRUDService();
       return Scaffold(
-              appBar: AppBar(
-                backgroundColor: Colors.orange,
-                title: Text("Book Slot in " + widget.daycareName),
-              ),
-              body: FutureBuilder(
-                  future: userCRUDService.displayBabyProfile(username),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      List<BabyDetails> babyDetails = snapshot.data!;
-                      if (babyDetails.length != 0) {
-                        // if (true) {
-                        return ListView(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 50, horizontal: 10),
-                            children: [          
-                              OutlinedAutomatedNextFocusableTextFormField(
-                                // TextFormField(
-                                validator: (value) {
-                                  if (value == null || value.isEmpty)
-                                    return 'Please select a Date for Booking';
-                                  else
-                                    null;
-                                },
-                                controller: _dateOfBooking,
-                                labelText: 'Date',
-                                inputType: TextInputType.datetime,
-                                icon: Icon(Icons.calendar_today_rounded,
-                                    color: Colors.orange),
-                                onTap: () async {
-                                  // Below line stops keyboard from appearing
-                                  FocusScope.of(context)
-                                      .requestFocus(new FocusNode());
-
-                                  // Show Date Picker Here
-                                  pickedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime.now(),
-                                      lastDate: DateTime.now()
-                                          .add(Duration(days: 10)));
-                                  if (pickedDate != null) {
-                                    setState(() {
-                                      _dateOfBooking.text =
-                                          DateFormat('dd-MM-yyyy')
-                                              .format(pickedDate!);
-                                    });
-                                    calculateTotalHoursAndCharge(
-                                        dropTime, pickUpTime, widget.charges);
-                                  }
-                                },
-                              ),
-                              OutlinedAutomatedNextFocusableTextFormField(
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty)
-                                      return 'Please select Drop Time';
-                                    else
-                                      null;
-                                  },
-                                  controller: _dropTime,
-                                  labelText: 'Drop Time',
-                                  inputType: TextInputType.datetime,
-                                  icon: Icon(
-                                    Icons.access_time_filled_outlined,
-                                    color: Colors.orange,
-                                  ),
-                                  onTap: _showDropTimePicker),
-                              OutlinedAutomatedNextFocusableTextFormField(
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty)
-                                      return 'Please select Pick Up Time';
-                                    else
-                                      null;
-                                  },
-                                  controller: _pickUpTime,
-                                  labelText: 'Pick up Time',
-                                  inputType: TextInputType.datetime,
-                                  icon: Icon(Icons.access_time_filled_outlined,
-                                      color: Colors.orange),
-                                  onTap: _showPickUpTimePicker),
-                              SizedBox(height: 20),
-                              Column(
-                                children: [
-                                  Text(
-                                    totalHoursText,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.deepOrange,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                  SizedBox(height: 20),
-                                  Text(
-                                    chargeText,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.deepOrange,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  )
-                                ],
-                              ),
-                              SizedBox(height: 20),
-                              ElevatedButton(
-                                onPressed: () {
-                                  BookingCRUDService bookingCRUDService =
-                                      new BookingCRUDService();
-                                  bookingCRUDService.createBooking(
-                                      username,
-                                      babyDetails[0].babyFirstName +
-                                          " " +
-                                          babyDetails[0].babyLastName,
-                                      widget.daycareID,
-                                      widget.daycareName,
-                                      createISO8601String(pickedDate, dropTime),
-                                      createISO8601String(
-                                          pickedDate, pickUpTime),
-                                      charge!,
-                                      "In process");
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          duration: const Duration(seconds: 7),
-                                          content: Text(
-                                              'Thanks for booking using Toddlyy.\nWe will be responding to you soon! \nThe booking status will also be updated on the Bookings Tab')));
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              CircularIndicator(
-                                                nextScreenIndex: BOOKINGS_PAGE,
-                                              )));
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.deepOrangeAccent,
-                                  padding: EdgeInsets.symmetric(horizontal: 50),
-                                  elevation: 2,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                ),
-                                child: Text(
-                                  "BOOK SLOT",
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      letterSpacing: 2.2,
-                                      color: Colors.white),
-                                ),
-                              ),
-                            ]);
-                      } else {
-                        return Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                  "Please fill your Baby's Profile before making a booking",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      // letterSpacing: 2.2,
-                                      color: Colors.black)),
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => BottomNavBar(
-                                                currentScreen:
-                                                    BABY_PROFILE_PAGE,
-                                              )));
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.deepOrangeAccent,
-                                  padding: EdgeInsets.symmetric(horizontal: 50),
-                                  elevation: 2,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                ),
-                                child: Text(
-                                  "Fill Baby Profile",
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      letterSpacing: 2.2,
-                                      color: Colors.white),
-                                ),
-                              ),
-                            ],
+        appBar: AppBar(
+          backgroundColor: Colors.orange,
+          title: Text("Book Slot in " + widget.daycareName),
+        ),
+        body: FutureBuilder(
+            future: userCRUDService.displayBabyProfile(username),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                List<BabyDetails> babyDetails = snapshot.data!;
+                if (babyDetails.length != 0) {
+                  // if (true) {
+                  return ListView(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 50, horizontal: 10),
+                      children: [
+                               Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      width: double.infinity,
+                      child: Wrap(
+                        direction: Axis.horizontal,
+                        children: <Widget>[
+                          Text(
+                            "*You can book any time from "+widget.startTime +
+                                " - " +
+                                widget.endTime,
+                            textAlign: TextAlign.center,
+                            // softWrap: true,
+                            style: TextStyle(
+                              color: Colors.orange,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
-                        );
-                      }
-                    } else
-                      return SizedBox(
-                        height: MediaQuery.of(context).size.height / 0.8,
-                        child: Center(
-                          child: CircularProgressIndicator(),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 10,),
+                        OutlinedAutomatedNextFocusableTextFormField(
+                          // TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty)
+                              return 'Please select a Date for Booking';
+                            else
+                              null;
+                          },
+                          controller: _dateOfBooking,
+                          labelText: 'Date',
+                          inputType: TextInputType.datetime,
+                          icon: Icon(Icons.calendar_today_rounded,
+                              color: Colors.orange),
+                          onTap: () async {
+                            // Below line stops keyboard from appearing
+                            FocusScope.of(context)
+                                .requestFocus(new FocusNode());
+
+                            // Show Date Picker Here
+                            pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime.now(),
+                                lastDate:
+                                    DateTime.now().add(Duration(days: 10)));
+                            if (pickedDate != null) {
+                              setState(() {
+                                _dateOfBooking.text = DateFormat('dd-MM-yyyy')
+                                    .format(pickedDate!);
+                              });
+                              calculateTotalHoursAndCharge(
+                                  dropTime, pickUpTime, widget.charges);
+                            }
+                          },
                         ),
-                      );
-                  }))
+                        OutlinedAutomatedNextFocusableTextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty)
+                                return 'Please select Drop Time';
+                              else
+                                null;
+                            },
+                            controller: _dropTime,
+                            labelText: 'Drop Time',
+                            inputType: TextInputType.datetime,
+                            icon: Icon(
+                              Icons.access_time_filled_outlined,
+                              color: Colors.orange,
+                            ),
+                            onTap: _showDropTimePicker),
+                        OutlinedAutomatedNextFocusableTextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty)
+                                return 'Please select Pick Up Time';
+                              else
+                                null;
+                            },
+                            controller: _pickUpTime,
+                            labelText: 'Pick up Time',
+                            inputType: TextInputType.datetime,
+                            icon: Icon(Icons.access_time_filled_outlined,
+                                color: Colors.orange),
+                            onTap: _showPickUpTimePicker),
+                        SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: () {
+                            BookingCRUDService bookingCRUDService =
+                                new BookingCRUDService();
+                            bookingCRUDService.createBooking(
+                                username,
+                                babyDetails[0].babyFirstName +
+                                    " " +
+                                    babyDetails[0].babyLastName,
+                                widget.daycareID,
+                                widget.daycareName,
+                                createISO8601String(pickedDate, dropTime),
+                                createISO8601String(pickedDate, pickUpTime),
+                                charge!,
+                                "In process");
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                duration: const Duration(seconds: 7),
+                                content: Text(
+                                    'Thanks for booking using Toddlyy.\nWe will be responding to you soon! \nThe booking status will also be updated on the Bookings Tab')));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CircularIndicator(
+                                          nextScreenIndex: BOOKINGS_PAGE,
+                                        )));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.deepOrange,
+                            padding: EdgeInsets.symmetric(horizontal: 50),
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                          ),
+                          child: Text(
+                            "Book Slot",
+                            style: TextStyle(
+                                fontSize: 14,
+                                letterSpacing: 2.2,
+                                color: Colors.white),
+                          ),
+                        ),
+                        Column(
+                          children: [
+                            SizedBox(height: 20),
+                            Text(
+                              totalHoursText,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.deepOrange,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              chargeText,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            Text(
+                              paymentText,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 11,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ]);
+                } else {
+                  return Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                            "Please fill your Baby's Profile before making a booking",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 20,
+                                // letterSpacing: 2.2,
+                                color: Colors.black)),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => BottomNavBar(
+                                          currentScreen: BABY_PROFILE_PAGE,
+                                        )));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.deepOrange,
+                            padding: EdgeInsets.symmetric(horizontal: 50),
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                          ),
+                          child: Text(
+                            "Fill Baby Profile",
+                            style: TextStyle(
+                                fontSize: 14,
+                                letterSpacing: 2.2,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              } else
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height / 0.8,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+            }),
+
+        //To shift button to the bottom of screen
+        // bottomNavigationBar: BottomAppBar(
+        //   color: Colors.transparent,
+        //   child: ElevatedButton(
+        //                   onPressed: () {
+        //                     Navigator.push(
+        //                         context,
+        //                         MaterialPageRoute(
+        //                             builder: (context) => BottomNavBar(
+        //                                   currentScreen: BABY_PROFILE_PAGE,
+        //                                 )));
+        //                   },
+        //                   style: ElevatedButton.styleFrom(
+        //                     backgroundColor: Colors.deepOrange,
+        //                     padding: EdgeInsets.symmetric(horizontal: 50),
+        //                     elevation: 2,
+        //                     shape: RoundedRectangleBorder(
+        //                         borderRadius: BorderRadius.circular(20)),
+        //                   ),
+        //                   child: Text(
+        //                     "Fill Baby Profile",
+        //                     style: TextStyle(
+        //                         fontSize: 14,
+        //                         letterSpacing: 2.2,
+        //                         color: Colors.white),
+        //                   ),
+        //                 ),
+        //   elevation: 0,
+        // ),
+      )
           // )
           ;
     } else {
