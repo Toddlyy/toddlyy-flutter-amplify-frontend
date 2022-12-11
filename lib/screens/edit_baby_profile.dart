@@ -27,7 +27,7 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
 
   final _relationsList = ["Father", "Mother", "Guardian"];
 
-  final _gendersList = ["Male", "Female", "Others"];
+  final _gendersList = ["Male", "Female"];
 
   String? _selectedRelation;
 
