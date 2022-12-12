@@ -3,26 +3,92 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:toddlyybeta/backend_services/daycare_crud.dart';
 import 'package:toddlyybeta/screens/show_daycare_details.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:toddlyybeta/providers.dart';
 
-class ListDaycares extends StatefulWidget {
+class ListDaycares extends StatefulHookWidget {
   const ListDaycares({super.key});
 
   @override
   State<ListDaycares> createState() => _ListDaycaresState();
 }
 
+Future<void> _dialogBuilder(BuildContext context) {
+  return showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Help'),
+        content: const Text(
+            'Please call us on +91 8104241955 or email at toddlyytech@gmail.com for any help. We will try to get back to you as soon as possible!'),
+        actions: <Widget>[
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.labelLarge,
+            ),
+            child: const Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
 class _ListDaycaresState extends State<ListDaycares> {
+  var userSignedIn;
+  Future<void> signOutCurrentUser() async {
+    try {
+      var result = await Amplify.Auth.signOut();
+      userSignedIn.setUsername('');
+      userSignedIn.setUserCurrentState(false);
+    } on AuthException catch (e) {
+      print(e.message);
+    }
+  }
+
   List<dynamic> daycaresList = [];
+  void handleClick(String value) {
+    switch (value) {
+      case 'Logout':
+         signOutCurrentUser();
+        ;
+        break;
+      case 'Help':
+        _dialogBuilder(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+     userSignedIn = useProvider(UserLoggedInProvider);
+
     DaycareCRUDService daycareCRUDService = new DaycareCRUDService();
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-           appBar: AppBar(
-            backgroundColor: Colors.orange,
-            title: Text('Toddlyy'),
-          ),
+        appBar: AppBar(
+          title: Text('Toddlyy'),
+          backgroundColor: Colors.orange,
+          actions: <Widget>[
+            PopupMenuButton<String>(
+              onSelected: handleClick,
+              itemBuilder: (BuildContext context) {
+                return {'Logout', 'Help'}.map((String choice) {
+                  return PopupMenuItem<String>(
+                    value: choice,
+                    child: Text(choice),
+                  );
+                }).toList();
+              },
+            ),
+          ],
+        ),
         body: FutureBuilder(
             future: daycareCRUDService.displayDaycares(),
             builder: (context, snapshot) {
@@ -98,7 +164,6 @@ Widget itemBuilder(
                         color: Colors.deepOrange,
                         fontSize: 25,
                         fontWeight: FontWeight.w500,
-                        
                       ),
                     ),
                     // Container(
@@ -123,13 +188,13 @@ Widget itemBuilder(
               Container(
                 width: size.width / 1.2,
                 child: Text(
-                      daycaresList[index]["region"]!,
-                      style: TextStyle(
-                        color: Colors.deepOrange,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                  daycaresList[index]["region"]!,
+                  style: TextStyle(
+                    color: Colors.deepOrange,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
             ],
           ),
