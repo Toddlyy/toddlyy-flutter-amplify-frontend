@@ -181,12 +181,6 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                                       onFieldSubmitted: (_) {
                                         // FocusScope.of(context).requestFocus(_dateFocusNode);
                                       }),
-                                  dateOfBirthWidget(
-                                    dateOfBirth: babyDetails[0].dob,
-                                    callback: (value) {
-                                      updatedDateOfBirth = value;
-                                    },
-                                  ),
 
                                   DropdownButtonFormField(
                                       value: babyDetails[0].gender,
@@ -246,6 +240,12 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                                               color: Colors.orange,
                                               IconClass.mother_and_son),
                                           border: UnderlineInputBorder())),
+                                  dateOfBirthWidget(
+                                    dateOfBirth: babyDetails[0].dob,
+                                    callback: (value) {
+                                      updatedDateOfBirth = value;
+                                    },
+                                  ),
                                   // buildTextField("Last Name", "", false),
                                   // buildTextField(
                                   //     "Date of Birth", "10/10/2010", true),

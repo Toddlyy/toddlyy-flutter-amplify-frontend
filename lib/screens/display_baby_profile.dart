@@ -59,6 +59,7 @@ class _DisplayBabyProfileScreenState extends State<DisplayBabyProfileScreen> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => FillBabyProfilePage()));
+                      // FillBabyProfilePage();
                     });
                     return SizedBox(
                       height: MediaQuery.of(context).size.height / 0.8,
@@ -126,10 +127,11 @@ class _DisplayBabyProfileScreenState extends State<DisplayBabyProfileScreen> {
                               TextField(
                                 readOnly: true,
                                 controller: _dobController,
-                                decoration:
-                                    InputDecoration(prefixIcon: Icon(
+                                decoration: InputDecoration(
+                                    prefixIcon: Icon(
                                         color: Colors.orange,
-                                        Icons.calendar_today),labelText: 'Date of Birth'),
+                                        Icons.calendar_today),
+                                    labelText: 'Date of Birth'),
                               ),
                               TextField(
                                 readOnly: true,

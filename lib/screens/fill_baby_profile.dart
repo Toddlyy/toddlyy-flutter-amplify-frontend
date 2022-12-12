@@ -10,6 +10,7 @@ import 'package:toddlyybeta/models/baby_model.dart';
 import 'package:intl/intl.dart';
 import 'package:toddlyybeta/screens/bottom_navbar.dart';
 import 'package:toddlyybeta/widgets/circular_progress.dart';
+import 'package:toddlyybeta/assets/icon_class_icons.dart';
 
 class FillBabyProfilePage extends StatefulHookWidget {
   @override
@@ -72,7 +73,11 @@ class _FillBabyProfilePageState extends State<FillBabyProfilePage> {
                                   null;
                               },
                               decoration: InputDecoration(
-                                  labelText: 'First Name of Baby'),
+                                  prefixIcon: Icon(
+                                      color: Colors.orange,
+                                      IconClass
+                                          .baby_head_with_a_small_heart_outline),
+                                  labelText: 'First Name'),
                               textInputAction: TextInputAction.next,
                               onFieldSubmitted: (_) {
                                 // FocusScope.of(context).requestFocus(_dateFocusNode);
@@ -81,45 +86,15 @@ class _FillBabyProfilePageState extends State<FillBabyProfilePage> {
                           TextFormField(
                               controller: _babyLastNameController,
                               decoration: InputDecoration(
-                                  labelText: 'Last Name of Baby'),
+                                  prefixIcon: Icon(
+                                      color: Colors.orange,
+                                      IconClass
+                                          .baby_head_with_a_small_heart_outline),
+                                  labelText: 'Last Name'),
                               textInputAction: TextInputAction.next,
                               onFieldSubmitted: (_) {
                                 // FocusScope.of(context).requestFocus(_dateFocusNode);
                               }),
-                          TextFormField(
-                            validator: (value) {
-                              if (value == null || value.isEmpty)
-                                return 'Please enter Baby\'s Date of Birth';
-                              else
-                                null;
-                            },
-                            controller: _dateOfBirthController,
-                            decoration: const InputDecoration(
-                                icon: Icon(Icons.calendar_today_rounded),
-                                labelText: "Date of Birth"),
-                            onTap: () async {
-                              // Below line stops keyboard from appearing
-                              FocusScope.of(context)
-                                  .requestFocus(new FocusNode());
-
-                              // Show Date Picker Here
-                              DateTime? pickedDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(2010),
-                                  lastDate: DateTime.now());
-                              if (pickedDate != null) {
-                                setState(() {
-                                  _dateOfBirthController.text =
-                                      DateFormat('yyyy-MM-dd')
-                                          .format(pickedDate);
-                                });
-                              }
-                            },
-                            textInputAction: TextInputAction.next,
-                            focusNode: _dateFocusNode,
-                          ),
-
                           DropdownButtonFormField(
                               validator: (value) {
                                 if (value == null || value.isEmpty)
@@ -145,9 +120,9 @@ class _FillBabyProfilePageState extends State<FillBabyProfilePage> {
                               decoration: InputDecoration(
                                   labelText: "Gender",
                                   prefixIcon: Icon(
-                                      color: Colors.orange,
-                                      Icons.accessibility_new_rounded),
+                                      color: Colors.orange, IconClass.children),
                                   border: UnderlineInputBorder())),
+
                           DropdownButtonFormField(
                               validator: (value) {
                                 if (value == null || value.isEmpty)
@@ -171,11 +146,45 @@ class _FillBabyProfilePageState extends State<FillBabyProfilePage> {
                                   Icons.arrow_drop_down_circle),
                               dropdownColor: Colors.orangeAccent,
                               decoration: InputDecoration(
-                                  labelText: "Relation with child",
+                                  labelText: "Your Relation with Baby",
                                   prefixIcon: Icon(
                                       color: Colors.orange,
-                                      Icons.accessibility_new_rounded),
+                                      IconClass.mother_and_son),
                                   border: UnderlineInputBorder())),
+                          TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty)
+                                return 'Please enter Baby\'s Date of Birth';
+                              else
+                                null;
+                            },
+                            controller: _dateOfBirthController,
+                            decoration: const InputDecoration(
+                                icon: Icon(Icons.calendar_today_rounded,
+                                    color: Colors.orange),
+                                labelText: "Date of Birth"),
+                            onTap: () async {
+                              // Below line stops keyboard from appearing
+                              FocusScope.of(context)
+                                  .requestFocus(new FocusNode());
+
+                              // Show Date Picker Here
+                              DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2010),
+                                  lastDate: DateTime.now());
+                              if (pickedDate != null) {
+                                setState(() {
+                                  _dateOfBirthController.text =
+                                      DateFormat('dd-MM-yyyy')
+                                          .format(pickedDate);
+                                });
+                              }
+                            },
+                            textInputAction: TextInputAction.next,
+                            focusNode: _dateFocusNode,
+                          ),
                           // buildTextField("Last Name", "", false),
                           // buildTextField(
                           //     "Date of Birth", "10/10/2010", true),
@@ -250,7 +259,7 @@ class _FillBabyProfilePageState extends State<FillBabyProfilePage> {
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.orange,
+                            backgroundColor: Colors.deepOrange,
                             padding: EdgeInsets.symmetric(horizontal: 50),
                             elevation: 2,
                             shape: RoundedRectangleBorder(

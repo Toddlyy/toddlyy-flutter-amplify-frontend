@@ -48,9 +48,9 @@ class _dateOfBirthWidgetState extends State<dateOfBirthWidget> {
             lastDate: DateTime.now());
         if (pickedDate != null) {
           setState(() {
-            dobPlaceholder = DateFormat('yyyy-MM-dd').format(pickedDate);
+            dobPlaceholder = DateFormat('dd-MM-yyyy').format(pickedDate);
             _dateOfBirthController.text =
-                DateFormat('yyyy-MM-dd').format(pickedDate);
+                DateFormat('dd-MM-yyyy').format(pickedDate);
             widget.callback(dobPlaceholder);
           });
         }
