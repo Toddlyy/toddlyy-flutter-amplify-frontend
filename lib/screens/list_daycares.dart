@@ -10,9 +10,41 @@ class ListDaycares extends StatefulWidget {
   @override
   State<ListDaycares> createState() => _ListDaycaresState();
 }
-
+Future<void> _dialogBuilder(BuildContext context) {
+  return showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Help'),
+        content: const Text(
+            ' Please call us on                            +91 8104241955 or email at toddlyytech@gmail.com for any help.\n We will get back to you as soon as possible!'),
+        actions: <Widget>[
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.labelLarge,
+            ),
+            child: const Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
 class _ListDaycaresState extends State<ListDaycares> {
   List<dynamic> daycaresList = [];
+    void handleClick(String value) {
+    switch (value) {
+      case 'Logout':
+         //signOutCurrentUser();
+        ;
+        break;
+      case 'Help':
+        _dialogBuilder(context);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     DaycareCRUDService daycareCRUDService = new DaycareCRUDService();
@@ -20,9 +52,22 @@ class _ListDaycaresState extends State<ListDaycares> {
 
     return Scaffold(
            appBar: AppBar(
-            backgroundColor: Colors.orange,
-            title: Text('Toddlyy'),
-          ),
+          title: Text('Toddlyy'),
+          backgroundColor: Colors.orange,
+          actions: <Widget>[
+            PopupMenuButton<String>(
+              onSelected: handleClick,
+              itemBuilder: (BuildContext context) {
+                return {'Help'}.map((String choice) {
+                  return PopupMenuItem<String>(
+                    value: choice,
+                    child: Text(choice),
+                  );
+                }).toList();
+              },
+            ),
+          ],
+        ),
         body: FutureBuilder(
             future: daycareCRUDService.displayDaycares(),
             builder: (context, snapshot) {
