@@ -31,7 +31,11 @@ class _dateOfBirthWidgetState extends State<dateOfBirthWidget> {
       },
       controller: _dateOfBirthController,
       decoration: const InputDecoration(
-          icon: Icon(Icons.calendar_today_rounded), labelText: "Date of Birth"),
+          icon: Icon(
+            Icons.calendar_today_rounded,
+            color: Colors.orange,
+          ),
+          labelText: "Date of Birth"),
       onTap: () async {
         // Below line stops keyboard from appearing
         FocusScope.of(context).requestFocus(new FocusNode());

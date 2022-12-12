@@ -275,7 +275,7 @@ class _EditUserProfilePageState extends State<EditUserProfilePage> {
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.orange,
+                                    backgroundColor: Colors.deepOrange,
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 50),
                                     elevation: 2,

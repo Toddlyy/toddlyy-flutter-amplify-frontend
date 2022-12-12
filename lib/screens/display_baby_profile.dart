@@ -6,6 +6,7 @@ import 'package:toddlyybeta/backend_services/user_crud.dart';
 import 'package:toddlyybeta/models/baby_model.dart';
 import 'package:toddlyybeta/screens/fill_baby_profile.dart';
 import 'package:toddlyybeta/widgets/date_of_birth_widget.dart';
+import 'package:toddlyybeta/assets/icon_class_icons.dart';
 
 import 'package:toddlyybeta/screens/edit_baby_profile.dart';
 
@@ -106,25 +107,38 @@ class _DisplayBabyProfileScreenState extends State<DisplayBabyProfileScreen> {
                                 readOnly: true,
                                 controller: _babyFirstNameController,
                                 decoration: InputDecoration(
-                                    labelText: 'First Name of Baby'),
+                                    prefixIcon: Icon(
+                                        color: Colors.orange,
+                                        IconClass
+                                            .baby_head_with_a_small_heart_outline),
+                                    labelText: 'First Name'),
                               ),
                               TextField(
                                 readOnly: true,
                                 controller: _babyLastNameController,
                                 decoration: InputDecoration(
-                                    labelText: 'Last Name of Baby'),
+                                    prefixIcon: Icon(
+                                        color: Colors.orange,
+                                        IconClass
+                                            .baby_head_with_a_small_heart_outline),
+                                    labelText: 'Last Name'),
                               ),
                               TextField(
                                 readOnly: true,
                                 controller: _dobController,
                                 decoration:
-                                    InputDecoration(labelText: 'Date of Birth'),
+                                    InputDecoration(prefixIcon: Icon(
+                                        color: Colors.orange,
+                                        Icons.calendar_today),labelText: 'Date of Birth'),
                               ),
                               TextField(
                                 readOnly: true,
                                 controller: _genderController,
-                                decoration:
-                                    InputDecoration(labelText: 'Gender'),
+                                decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                        color: Colors.orange,
+                                        IconClass.children),
+                                    labelText: 'Gender'),
                               ),
                               TextField(
                                 readOnly: true,
@@ -132,8 +146,8 @@ class _DisplayBabyProfileScreenState extends State<DisplayBabyProfileScreen> {
                                 decoration: InputDecoration(
                                     prefixIcon: Icon(
                                         color: Colors.orange,
-                                        Icons.accessibility_new_rounded),
-                                    labelText: 'Relation with child'),
+                                        IconClass.mother_and_son),
+                                    labelText: 'Your Relation with baby'),
                               ),
                             ],
                           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:toddlyybeta/assets/icon_class_icons.dart';
 import 'package:toddlyybeta/screens/display_baby_profile.dart';
 import 'package:toddlyybeta/screens/display_bookings.dart';
 import 'package:toddlyybeta/screens/display_user_profile.dart';
@@ -47,7 +48,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               tabs: const [
             GButton(icon: Icons.home, text: 'Home'),
             GButton(icon: Icons.event, text: "Bookings"),
-            GButton(icon: Icons.baby_changing_station, text: "Baby Profile"),
+            GButton(icon: IconClass.baby_head_with_a_small_heart_outline, text: "Baby Profile"),
             GButton(icon: Icons.account_circle, text: 'User Profile'),
           ])),
     );
