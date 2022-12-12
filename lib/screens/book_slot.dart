@@ -256,7 +256,7 @@ class _BookSlotState extends State<BookSlot> {
                                 createISO8601String(pickedDate, dropTime),
                                 createISO8601String(pickedDate, pickUpTime),
                                 charge!,
-                                "In process");
+                                "In Process");
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                 duration: const Duration(seconds: 7),
                                 content: Text(
