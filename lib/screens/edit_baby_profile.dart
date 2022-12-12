@@ -8,6 +8,7 @@ import 'package:toddlyybeta/models/baby_model.dart';
 import 'package:toddlyybeta/widgets/date_of_birth_widget.dart';
 import 'package:toddlyybeta/screens/bottom_navbar.dart';
 import 'package:toddlyybeta/widgets/circular_progress.dart';
+import 'package:toddlyybeta/assets/icon_class_icons.dart';
 
 class EditBabyProfilePage extends StatefulHookWidget {
   @override
@@ -27,7 +28,7 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
 
   final _relationsList = ["Father", "Mother", "Guardian"];
 
-  final _gendersList = ["Male", "Female", "Others"];
+  final _gendersList = ["Male", "Female"];
 
   String? _selectedRelation;
 
@@ -67,6 +68,10 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
               //     ),
               //   ],
               // ),
+              appBar: AppBar(
+                backgroundColor: Colors.orange,
+                title: Text('Edit Baby Profile'),
+              ),
               body: FutureBuilder(
                   future: userCRUDService.displayBabyProfile(username),
                   builder: (context, snapshot) {
@@ -92,14 +97,6 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                         //   },
                         child: ListView(
                           children: [
-                            Text(
-                              "Edit Profile",
-                              style: TextStyle(
-                                  fontSize: 25, fontWeight: FontWeight.w500),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
                             // Center(
                             //   child: Stack(
                             //     children: [
@@ -162,6 +159,10 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                                           null;
                                       },
                                       decoration: InputDecoration(
+                                          prefixIcon: Icon(
+                                              color: Colors.orange,
+                                              IconClass
+                                                  .baby_head_with_a_small_heart_outline),
                                           labelText: 'First Name of Baby'),
                                       textInputAction: TextInputAction.next,
                                       onFieldSubmitted: (_) {
@@ -171,17 +172,15 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                                   TextFormField(
                                       controller: _babyLastNameController,
                                       decoration: InputDecoration(
+                                          prefixIcon: Icon(
+                                              color: Colors.orange,
+                                              IconClass
+                                                  .baby_head_with_a_small_heart_outline),
                                           labelText: 'Last Name of Baby'),
                                       textInputAction: TextInputAction.next,
                                       onFieldSubmitted: (_) {
                                         // FocusScope.of(context).requestFocus(_dateFocusNode);
                                       }),
-                                  dateOfBirthWidget(
-                                    dateOfBirth: babyDetails[0].dob,
-                                    callback: (value) {
-                                      updatedDateOfBirth = value;
-                                    },
-                                  ),
 
                                   DropdownButtonFormField(
                                       value: babyDetails[0].gender,
@@ -210,7 +209,7 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                                           labelText: "Gender",
                                           prefixIcon: Icon(
                                               color: Colors.orange,
-                                              Icons.accessibility_new_rounded),
+                                              IconClass.children),
                                           border: UnderlineInputBorder())),
                                   DropdownButtonFormField(
                                       value: babyDetails[0].relation,
@@ -239,8 +238,14 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                                           labelText: "Relation with child",
                                           prefixIcon: Icon(
                                               color: Colors.orange,
-                                              Icons.accessibility_new_rounded),
+                                              IconClass.mother_and_son),
                                           border: UnderlineInputBorder())),
+                                  dateOfBirthWidget(
+                                    dateOfBirth: babyDetails[0].dob,
+                                    callback: (value) {
+                                      updatedDateOfBirth = value;
+                                    },
+                                  ),
                                   // buildTextField("Last Name", "", false),
                                   // buildTextField(
                                   //     "Date of Birth", "10/10/2010", true),
@@ -266,7 +271,8 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => BottomNavBar(
-                                                  currentScreen: BABY_PROFILE_PAGE,
+                                                  currentScreen:
+                                                      BABY_PROFILE_PAGE,
                                                 )));
                                   },
                                   child: Text("CANCEL",
@@ -307,12 +313,15 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                                             babyDetails.dob,
                                             babyDetails.relation,
                                             babyDetails.gender);
-                                          
+
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    CircularIndicator(nextScreenIndex: BABY_PROFILE_PAGE,)));
+                                                    CircularIndicator(
+                                                      nextScreenIndex:
+                                                          BABY_PROFILE_PAGE,
+                                                    )));
                                       }
                                     } else {
                                       debugPrint(
@@ -320,7 +329,7 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.orange,
+                                    backgroundColor: Colors.deepOrange,
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 50),
                                     elevation: 2,
@@ -345,11 +354,11 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                       );
                     } else
                       return SizedBox(
-       height: MediaQuery.of(context).size.height / 0.8,
-       child: Center(
-           child: CircularProgressIndicator(),
-            ),
-        );
+                        height: MediaQuery.of(context).size.height / 0.8,
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
                   }))
           // )
           ;

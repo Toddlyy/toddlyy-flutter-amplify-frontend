@@ -5,6 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:toddlyybeta/providers.dart';
 import 'package:toddlyybeta/screens/show_daycare_details.dart';
+import 'package:toddlyybeta/assets/icon_class_icons.dart';
+import 'package:toddlyybeta/assets/status_icon_icons.dart';
 
 class DisplayBookings extends StatefulHookWidget {
   const DisplayBookings({super.key});
@@ -26,35 +28,45 @@ class _DisplayBookingsState extends State<DisplayBookings> {
       final size = MediaQuery.of(context).size;
 
       return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.orange,
+            title: Text('Upcoming Bookings'),
+          ),
           body: FutureBuilder(
               future: bookingCRUDService.listUpcomingBookings(username),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   bookingsList = snapshot.data!;
-                  return SingleChildScrollView(
-                    child: Column(children: [
-                      SizedBox(height: 20),
-                      Text(
-                        "Upcoming Bookings",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.deepOrangeAccent,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                        ),
+                  if (bookingsList.length != 0) {
+                    return SingleChildScrollView(
+                      child: Column(children: [
+                        bookingsListWidget(bookingsList, size),
+                        SizedBox(height: 20),
+                      ]),
+                    );
+                  } else {
+                    return Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("You have no Upcoming Bookings",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  // letterSpacing: 2.2,
+                                  color: Colors.black)),
+                        ],
                       ),
-                      SizedBox(height: 20),
-                      bookingsListWidget(bookingsList, size),
-                      SizedBox(height: 20),
-                    ]),
-                  );
+                    );
+                  }
                 } else
                   return SizedBox(
-       height: MediaQuery.of(context).size.height / 0.8,
-       child: Center(
-           child: CircularProgressIndicator(),
-            ),
-        );
+                    height: MediaQuery.of(context).size.height / 0.8,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
               }));
     } else {
       return MaterialApp(
@@ -79,6 +91,7 @@ class _DisplayBookingsState extends State<DisplayBookings> {
 
 Widget itemBuilder(
     List<dynamic> bookingsList, Size size, int index, BuildContext context) {
+  String status = bookingsList[index]["status"]!;
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 18.0),
     child: GestureDetector(
@@ -122,78 +135,114 @@ Widget itemBuilder(
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 7, 7, 7),
-                child: Text(
-                  bookingsList[index]["babyName"]!,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
+                child: Row(
+                  children: [
+                    Icon(IconClass.baby_head_with_a_small_heart_outline,
+                        size: 30, color: Colors.orange),
+                    SizedBox(width: 5),
+                    Text(
+                      bookingsList[index]["babyName"]!,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 7, 7, 7),
-                child: Text(
-                  "Date: " +
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Icon(Icons.calendar_today, size: 25, color: Colors.orange),
+                    SizedBox(width: 5),
+                    Text(
                       isoToDate(bookingsList[index]["startTime"]!),
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 7, 7, 7),
-                child: Text(
-                  "Drop At: " +
-                      isoTo12HourTime(bookingsList[index]["startTime"]!),
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Icon(Icons.access_time_filled_outlined,
+                        size: 25, color: Colors.orange),
+                    SizedBox(width: 7),
+                    Text(
+                      isoTo12HourTime(bookingsList[index]["startTime"]!) +
+                          " - " +
+                          isoTo12HourTime(bookingsList[index]["endTime"]!),
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 7, 7, 7),
-                child: Text(
-                  "Pick Up At: " +
-                      isoTo12HourTime(bookingsList[index]["endTime"]!),
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 7, 7, 7),
-                child: Text(
-                  "Charges: ₹" +
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Icon(Icons.currency_rupee_outlined,
+                        size: 25, color: Colors.green),
+                    SizedBox(width: 7),
+                    Text(
                       bookingsList[index]["charge"].toInt().toString(),
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 7, 7, 7),
-                child: Text(
-                  "Status: " + bookingsList[index]["status"]!,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Icon(StatusIcon.decision_making,
+                        size: 25, color: Colors.orange),
+                    SizedBox(width: 7),
+                    Text(
+                      status,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: status == "In Process"
+                            ? Colors.orange
+                            : status == "Accepted"
+                                ? Colors.green
+                                : Colors.red,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

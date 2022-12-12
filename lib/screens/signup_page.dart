@@ -121,15 +121,11 @@ class _SignUpPageState extends State<SignUpPage> {
               } on CodeMismatchException catch (e) {
                 //Don't pop it(let them try with different codes)
                 // Navigator.of(context).pop();
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      duration: const Duration(seconds: 5),
-                      content: Text(
-                          'The activation code is incorrect.\nPlease try again!')));
-                
-              }
-              catch(e){
-                
-              }
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    duration: const Duration(seconds: 5),
+                    content: Text(
+                        'The activation code is incorrect.\nPlease try again!')));
+              } catch (e) {}
             },
           ),
         ],
@@ -189,7 +185,8 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Sign Up'),
+        backgroundColor: Colors.orange,
+        title: Text('User Sign Up'),
       ),
       body:
           // FutureBuilder<void>(
@@ -200,7 +197,9 @@ class _SignUpPageState extends State<SignUpPage> {
           ListView(
         children: [
           //TextButton(onPressed: () {}, child: Text("Hello"),),
-
+          SizedBox(
+            height: 10,
+          ),
           Row(
             children: [
               Image.asset(
@@ -245,7 +244,18 @@ class _SignUpPageState extends State<SignUpPage> {
                   _signUpUser(phoneNumber);
                 }
               },
-              child: const Text('Sign Up'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepOrange,
+                padding: EdgeInsets.symmetric(horizontal: 50),
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+              ),
+              child: Text(
+                "Sign Up",
+                style: TextStyle(
+                    fontSize: 14, letterSpacing: 2.2, color: Colors.white),
+              ),
             ),
           ),
           TextButton(
@@ -253,7 +263,13 @@ class _SignUpPageState extends State<SignUpPage> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => LoginPage()));
               },
-              child: Text("Already created a user? Click to Log In"))
+              child: Text(
+                "Already created a user? Click here to Log In",
+                style: TextStyle(
+                    fontSize: 15, 
+                    //letterSpacing: 2.2, 
+                    color: Colors.orange),
+              ))
         ],
       ),
     );

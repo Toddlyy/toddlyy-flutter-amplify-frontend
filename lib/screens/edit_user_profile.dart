@@ -57,6 +57,10 @@ class _EditUserProfilePageState extends State<EditUserProfilePage> {
               //     ),
               //   ],
               // ),
+              appBar: AppBar(
+                backgroundColor: Colors.orange,
+                title: Text('Edit User Profile'),
+              ),
               body: FutureBuilder(
                   future: userCRUDService.displayUserProfile(username),
                   builder: (context, snapshot) {
@@ -78,14 +82,6 @@ class _EditUserProfilePageState extends State<EditUserProfilePage> {
                         //   },
                         child: ListView(
                           children: [
-                            Text(
-                              "Edit Profile",
-                              style: TextStyle(
-                                  fontSize: 25, fontWeight: FontWeight.w500),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
                             // Center(
                             //   child: Stack(
                             //     children: [
@@ -207,7 +203,8 @@ class _EditUserProfilePageState extends State<EditUserProfilePage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => BottomNavBar(
-                                                  currentScreen: USER_PROFILE_PAGE,
+                                                  currentScreen:
+                                                      USER_PROFILE_PAGE,
                                                 )));
                                   },
                                   child: Text("CANCEL",
@@ -249,10 +246,13 @@ class _EditUserProfilePageState extends State<EditUserProfilePage> {
                                             username, updatedDetails);
                                       }
                                       Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CircularIndicator(nextScreenIndex: USER_PROFILE_PAGE,)));
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CircularIndicator(
+                                                    nextScreenIndex:
+                                                        USER_PROFILE_PAGE,
+                                                  )));
 
                                       // Future.delayed(Duration(seconds: 15), () {
                                       //   CircularProgressIndicator();
@@ -275,7 +275,7 @@ class _EditUserProfilePageState extends State<EditUserProfilePage> {
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.orange,
+                                    backgroundColor: Colors.deepOrange,
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 50),
                                     elevation: 2,
@@ -300,11 +300,11 @@ class _EditUserProfilePageState extends State<EditUserProfilePage> {
                       );
                     } else
                       return SizedBox(
-       height: MediaQuery.of(context).size.height / 0.8,
-       child: Center(
-           child: CircularProgressIndicator(),
-            ),
-        );
+                        height: MediaQuery.of(context).size.height / 0.8,
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
                   }))
           // )
           ;

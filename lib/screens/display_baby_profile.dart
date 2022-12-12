@@ -6,6 +6,7 @@ import 'package:toddlyybeta/backend_services/user_crud.dart';
 import 'package:toddlyybeta/models/baby_model.dart';
 import 'package:toddlyybeta/screens/fill_baby_profile.dart';
 import 'package:toddlyybeta/widgets/date_of_birth_widget.dart';
+import 'package:toddlyybeta/assets/icon_class_icons.dart';
 
 import 'package:toddlyybeta/screens/edit_baby_profile.dart';
 
@@ -39,8 +40,9 @@ class _DisplayBabyProfileScreenState extends State<DisplayBabyProfileScreen> {
       UserCRUDService userCRUDService = new UserCRUDService();
       return Scaffold(
           appBar: AppBar(
-              // title: Text("Toddlyy"),
-              ),
+            backgroundColor: Colors.orange,
+            title: Text('Baby Profile'),
+          ),
           body: FutureBuilder(
               future: userCRUDService.displayBabyProfile(username),
               builder: (context, snapshot) {
@@ -52,18 +54,19 @@ class _DisplayBabyProfileScreenState extends State<DisplayBabyProfileScreen> {
                     _dobController.text = "";
                     _relationController.text = "";
                     _genderController.text = "";
-Future.delayed(Duration.zero, () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => FillBabyProfilePage()));
-                            });
+                    Future.delayed(Duration.zero, () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => FillBabyProfilePage()));
+                      // FillBabyProfilePage();
+                    });
                     return SizedBox(
-       height: MediaQuery.of(context).size.height / 0.8,
-       child: Center(
-           child: CircularProgressIndicator(),
-            ),
-        );
+                      height: MediaQuery.of(context).size.height / 0.8,
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
                   } else {
                     _babyFirstNameController.text =
                         babyDetails[0].babyFirstName;
@@ -79,11 +82,6 @@ Future.delayed(Duration.zero, () {
                         child: ListView(children: [
                           Row(
                             children: [
-                              Text(
-                                "Baby Profile",
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.w500),
-                              ),
                               Spacer(),
                               IconButton(
                                 icon: const Icon(Icons.edit),
@@ -110,25 +108,39 @@ Future.delayed(Duration.zero, () {
                                 readOnly: true,
                                 controller: _babyFirstNameController,
                                 decoration: InputDecoration(
-                                    labelText: 'First Name of Baby'),
+                                    prefixIcon: Icon(
+                                        color: Colors.orange,
+                                        IconClass
+                                            .baby_head_with_a_small_heart_outline),
+                                    labelText: 'First Name'),
                               ),
                               TextField(
                                 readOnly: true,
                                 controller: _babyLastNameController,
                                 decoration: InputDecoration(
-                                    labelText: 'Last Name of Baby'),
+                                    prefixIcon: Icon(
+                                        color: Colors.orange,
+                                        IconClass
+                                            .baby_head_with_a_small_heart_outline),
+                                    labelText: 'Last Name'),
                               ),
                               TextField(
                                 readOnly: true,
                                 controller: _dobController,
-                                decoration:
-                                    InputDecoration(labelText: 'Date of Birth'),
+                                decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                        color: Colors.orange,
+                                        Icons.calendar_today),
+                                    labelText: 'Date of Birth'),
                               ),
                               TextField(
                                 readOnly: true,
                                 controller: _genderController,
-                                decoration:
-                                    InputDecoration(labelText: 'Gender'),
+                                decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                        color: Colors.orange,
+                                        IconClass.children),
+                                    labelText: 'Gender'),
                               ),
                               TextField(
                                 readOnly: true,
@@ -136,8 +148,8 @@ Future.delayed(Duration.zero, () {
                                 decoration: InputDecoration(
                                     prefixIcon: Icon(
                                         color: Colors.orange,
-                                        Icons.accessibility_new_rounded),
-                                    labelText: 'Relation with child'),
+                                        IconClass.mother_and_son),
+                                    labelText: 'Your Relation with baby'),
                               ),
                             ],
                           ),
@@ -151,11 +163,11 @@ Future.delayed(Duration.zero, () {
                   }
                 } else
                   return SizedBox(
-       height: MediaQuery.of(context).size.height / 0.8,
-       child: Center(
-           child: CircularProgressIndicator(),
-            ),
-        );
+                    height: MediaQuery.of(context).size.height / 0.8,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
               }));
     } else {
       return Scaffold(
