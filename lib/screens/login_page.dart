@@ -73,6 +73,7 @@ class _LoginPageState extends State<LoginPage> {
             //   return
             ListView(
           children: [
+            SizedBox(height: 10,),
             OutlinedAutomatedNextFocusableTextFormField(
               controller: _firstNameController,
               labelText: 'First Name',
@@ -102,6 +103,13 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepOrange,
+                padding: EdgeInsets.symmetric(horizontal: 50),
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+              ),
                 onPressed: () async {
                   //final phoneNumber = '+91' + _phoneNumberController.text;
                   String phoneNo = _phoneNumberController.text;
