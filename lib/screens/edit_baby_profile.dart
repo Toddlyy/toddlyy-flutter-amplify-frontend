@@ -8,6 +8,7 @@ import 'package:toddlyybeta/models/baby_model.dart';
 import 'package:toddlyybeta/widgets/date_of_birth_widget.dart';
 import 'package:toddlyybeta/screens/bottom_navbar.dart';
 import 'package:toddlyybeta/widgets/circular_progress.dart';
+import 'package:toddlyybeta/assets/icon_class_icons.dart';
 
 class EditBabyProfilePage extends StatefulHookWidget {
   @override
@@ -158,6 +159,10 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                                           null;
                                       },
                                       decoration: InputDecoration(
+                                          prefixIcon: Icon(
+                                              color: Colors.orange,
+                                              IconClass
+                                                  .baby_head_with_a_small_heart_outline),
                                           labelText: 'First Name of Baby'),
                                       textInputAction: TextInputAction.next,
                                       onFieldSubmitted: (_) {
@@ -167,6 +172,10 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                                   TextFormField(
                                       controller: _babyLastNameController,
                                       decoration: InputDecoration(
+                                          prefixIcon: Icon(
+                                              color: Colors.orange,
+                                              IconClass
+                                                  .baby_head_with_a_small_heart_outline),
                                           labelText: 'Last Name of Baby'),
                                       textInputAction: TextInputAction.next,
                                       onFieldSubmitted: (_) {
@@ -206,7 +215,7 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                                           labelText: "Gender",
                                           prefixIcon: Icon(
                                               color: Colors.orange,
-                                              Icons.accessibility_new_rounded),
+                                              IconClass.children),
                                           border: UnderlineInputBorder())),
                                   DropdownButtonFormField(
                                       value: babyDetails[0].relation,
@@ -235,7 +244,7 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                                           labelText: "Relation with child",
                                           prefixIcon: Icon(
                                               color: Colors.orange,
-                                              Icons.accessibility_new_rounded),
+                                              IconClass.mother_and_son),
                                           border: UnderlineInputBorder())),
                                   // buildTextField("Last Name", "", false),
                                   // buildTextField(
@@ -320,7 +329,7 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.orange,
+                                    backgroundColor: Colors.deepOrange,
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 50),
                                     elevation: 2,
