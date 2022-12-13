@@ -10,6 +10,7 @@ class ListDaycares extends StatefulWidget {
   @override
   State<ListDaycares> createState() => _ListDaycaresState();
 }
+
 Future<void> _dialogBuilder(BuildContext context) {
   return showDialog<void>(
     context: context,
@@ -17,7 +18,7 @@ Future<void> _dialogBuilder(BuildContext context) {
       return AlertDialog(
         title: const Text('Help'),
         content: const Text(
-            ' Please call us on                            +91 8104241955 or email at toddlyytech@gmail.com for any help.\n We will get back to you as soon as possible!'),
+            'Please call us on +91 8104241955 or email at toddlyytech@gmail.com for any help or feedback.\n\nWe will get back to you as soon as possible!'),
         actions: <Widget>[
           TextButton(
             style: TextButton.styleFrom(
@@ -33,25 +34,27 @@ Future<void> _dialogBuilder(BuildContext context) {
     },
   );
 }
+
 class _ListDaycaresState extends State<ListDaycares> {
   List<dynamic> daycaresList = [];
-    void handleClick(String value) {
+  void handleClick(String value) {
     switch (value) {
       case 'Logout':
-         //signOutCurrentUser();
+        //signOutCurrentUser();
         ;
         break;
       case 'Help':
         _dialogBuilder(context);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     DaycareCRUDService daycareCRUDService = new DaycareCRUDService();
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-           appBar: AppBar(
+        appBar: AppBar(
           title: Text('Toddlyy'),
           backgroundColor: Colors.orange,
           actions: <Widget>[
@@ -143,7 +146,6 @@ Widget itemBuilder(
                         color: Colors.deepOrange,
                         fontSize: 25,
                         fontWeight: FontWeight.w500,
-                        
                       ),
                     ),
                     // Container(
@@ -168,13 +170,13 @@ Widget itemBuilder(
               Container(
                 width: size.width / 1.2,
                 child: Text(
-                      daycaresList[index]["region"]!,
-                      style: TextStyle(
-                        color: Colors.deepOrange,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                  daycaresList[index]["region"]!,
+                  style: TextStyle(
+                    color: Colors.deepOrange,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
             ],
           ),
