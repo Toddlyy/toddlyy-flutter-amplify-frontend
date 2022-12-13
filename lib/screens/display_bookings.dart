@@ -50,12 +50,14 @@ class _DisplayBookingsState extends State<DisplayBookings> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("You have no Upcoming Bookings",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  // letterSpacing: 2.2,
-                                  color: Colors.black)),
+                          Center(
+                            child: Text("You have no Upcoming Bookings",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    // letterSpacing: 2.2,
+                                    color: Colors.black)),
+                          ),
                         ],
                       ),
                     );
