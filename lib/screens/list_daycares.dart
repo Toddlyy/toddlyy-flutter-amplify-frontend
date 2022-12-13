@@ -18,7 +18,7 @@ Future<void> _dialogBuilder(BuildContext context) {
       return AlertDialog(
         title: const Text('Help'),
         content: const Text(
-            'Please call us on +91 8104241955 or email at toddlyytech@gmail.com for any help or feedback.\n\nWe will get back to you as soon as possible!'),
+            'Please call us on \n+91 8104241955 or email at toddlyytech@gmail.com for any help or feedback.\n\nWe will get back to you as soon as possible!'),
         actions: <Widget>[
           TextButton(
             style: TextButton.styleFrom(
