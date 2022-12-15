@@ -103,10 +103,11 @@ class _SignUpPageState extends State<SignUpPage> {
                                   child: const Text('Log In'),
                                   onPressed: () {
                                     Navigator.of(context).pop();
-                                    Navigator.push(
+                                    Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => LoginPage()));
+                                            builder: (context) => LoginPage()),
+                                        ((route) => false));
                                   },
                                 ),
                               ]));
@@ -163,8 +164,10 @@ class _SignUpPageState extends State<SignUpPage> {
               duration: const Duration(seconds: 7),
               content: Text(
                   'You have already created an account using this phone number. \nPlease directly login')));
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => LoginPage()));
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => LoginPage()),
+              ((route) => false));
         }
       } catch (e) {
         print(e);
@@ -260,14 +263,16 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
           TextButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LoginPage()));
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                    ((route) => false));
               },
               child: Text(
                 "Already created a user? Click here to Log In",
                 style: TextStyle(
-                    fontSize: 15, 
-                    //letterSpacing: 2.2, 
+                    fontSize: 15,
+                    //letterSpacing: 2.2,
                     color: Colors.orange),
               ))
         ],

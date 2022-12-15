@@ -267,13 +267,14 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                                             BorderRadius.circular(20)),
                                   ),
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => BottomNavBar(
-                                                  currentScreen:
-                                                      BABY_PROFILE_PAGE,
-                                                )));
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) => BottomNavBar(
+                                    //               currentScreen:
+                                    //                   BABY_PROFILE_PAGE,
+                                    //             )));
+                                    Navigator.pop(context);
                                   },
                                   child: Text("CANCEL",
                                       style: TextStyle(
@@ -314,14 +315,15 @@ class _EditBabyProfilePageState extends State<EditBabyProfilePage> {
                                             babyDetails.relation,
                                             babyDetails.gender);
 
-                                        Navigator.push(
+                                        Navigator.pushAndRemoveUntil(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     CircularIndicator(
                                                       nextScreenIndex:
                                                           BABY_PROFILE_PAGE,
-                                                    )));
+                                                    )),
+                                            ((route) => false));
                                       }
                                     } else {
                                       debugPrint(

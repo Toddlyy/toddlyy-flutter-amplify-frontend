@@ -62,9 +62,9 @@ class _LoginPageState extends State<LoginPage> {
     userSignedIn = useProvider(UserLoggedInProvider);
     return Scaffold(
         appBar: AppBar(
-            backgroundColor: Colors.orange,
-            title: Text('User Log In'),
-          ),
+          backgroundColor: Colors.orange,
+          title: Text('User Log In'),
+        ),
         body:
             // FutureBuilder<void>(
             //     // future: _configureAmplify(),
@@ -73,7 +73,9 @@ class _LoginPageState extends State<LoginPage> {
             //   return
             ListView(
           children: [
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             OutlinedAutomatedNextFocusableTextFormField(
               controller: _firstNameController,
               labelText: 'First Name',
@@ -104,12 +106,12 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepOrange,
-                padding: EdgeInsets.symmetric(horizontal: 50),
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-              ),
+                  backgroundColor: Colors.deepOrange,
+                  padding: EdgeInsets.symmetric(horizontal: 50),
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                ),
                 onPressed: () async {
                   //final phoneNumber = '+91' + _phoneNumberController.text;
                   String phoneNo = _phoneNumberController.text;
@@ -193,12 +195,13 @@ class _LoginPageState extends State<LoginPage> {
         String username = currentUser.userId;
         userSignedIn.setUsername(username);
         userSignedIn.setUserCurrentState(result.isSignedIn);
-        Navigator.push(
+        Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
                 builder: (context) => BottomNavBar(
                       currentScreen: HOME_PAGE,
-                    )));
+                    )),
+            ((route) => false));
       } else {
         showDialog<void>(
           context: context,
@@ -245,12 +248,13 @@ class _LoginPageState extends State<LoginPage> {
                       //     context,
                       //     MaterialPageRoute(
                       //         builder: (context) => UserProfileScreen()));
-                      Navigator.push(
+                      Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
                               builder: (context) => BottomNavBar(
                                     currentScreen: HOME_PAGE,
-                                  )));
+                                  )),
+                          ((route) => false));
                     } else {
                       debugPrint("Not signed in");
                     }
@@ -271,17 +275,21 @@ class _LoginPageState extends State<LoginPage> {
         );
       }
     } on UserNotFoundException catch (e) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => SignUpPage()));
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => SignUpPage()),
+          ((route) => false));
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: const Duration(seconds: 5),
-          content: Text('Please create a user before Logging In')));
+          content: Text('This phone number is not registered on Toddlyy yet.\nPlease create a user before Logging In')));
     } on UserNotConfirmedException catch (e) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => SignUpPage()));
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => SignUpPage()),
+          ((route) => false));
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: const Duration(seconds: 5),
-          content: Text('Please create a User before Logging In')));
+          content: Text('This phone number is not registered on Toddlyy yet.\nPlease create a User before Logging In')));
     } catch (e) {
       print(e);
     }

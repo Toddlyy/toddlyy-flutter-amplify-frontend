@@ -199,13 +199,14 @@ class _EditUserProfilePageState extends State<EditUserProfilePage> {
                                             BorderRadius.circular(20)),
                                   ),
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => BottomNavBar(
-                                                  currentScreen:
-                                                      USER_PROFILE_PAGE,
-                                                )));
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) => BottomNavBar(
+                                    //               currentScreen:
+                                    //                   USER_PROFILE_PAGE,
+                                    //             )));
+                                    Navigator.pop(context);
                                   },
                                   child: Text("CANCEL",
                                       style: TextStyle(
@@ -245,14 +246,15 @@ class _EditUserProfilePageState extends State<EditUserProfilePage> {
                                         userCRUDService.editUserProfile(
                                             username, updatedDetails);
                                       }
-                                      Navigator.push(
+                                      Navigator.pushAndRemoveUntil(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   CircularIndicator(
                                                     nextScreenIndex:
                                                         USER_PROFILE_PAGE,
-                                                  )));
+                                                  )),
+                                          ((route) => false));
 
                                       // Future.delayed(Duration(seconds: 15), () {
                                       //   CircularProgressIndicator();
