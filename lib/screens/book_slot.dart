@@ -156,28 +156,31 @@ class _BookSlotState extends State<BookSlot> {
                       padding:
                           EdgeInsets.symmetric(vertical: 50, horizontal: 10),
                       children: [
-                               Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      width: double.infinity,
-                      child: Wrap(
-                        direction: Axis.horizontal,
-                        children: <Widget>[
-                          Text(
-                            "*You can book any time from "+widget.startTime +
-                                " - " +
-                                widget.endTime,
-                            textAlign: TextAlign.center,
-                            // softWrap: true,
-                            style: TextStyle(
-                              color: Colors.orange,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                            ),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          width: double.infinity,
+                          child: Wrap(
+                            direction: Axis.horizontal,
+                            children: <Widget>[
+                              Text(
+                                "*You can book any time from " +
+                                    widget.startTime +
+                                    " - " +
+                                    widget.endTime,
+                                textAlign: TextAlign.center,
+                                // softWrap: true,
+                                style: TextStyle(
+                                  color: Colors.orange,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 10,),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
                         OutlinedAutomatedNextFocusableTextFormField(
                           // TextFormField(
                           validator: (value) {
@@ -256,17 +259,18 @@ class _BookSlotState extends State<BookSlot> {
                                 createISO8601String(pickedDate, dropTime),
                                 createISO8601String(pickedDate, pickUpTime),
                                 charge!,
-                                "In Process");
+                                "Awaiting Confirmation");
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                 duration: const Duration(seconds: 7),
                                 content: Text(
                                     'Thanks for booking using Toddlyy.\nWe will be responding to you soon! \nThe booking status will also be updated on the Bookings Tab')));
-                            Navigator.push(
+                            Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => CircularIndicator(
                                           nextScreenIndex: BOOKINGS_PAGE,
-                                        )));
+                                        )),
+                                ((route) => false));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.deepOrange,
@@ -332,12 +336,12 @@ class _BookSlotState extends State<BookSlot> {
                                 color: Colors.black)),
                         ElevatedButton(
                           onPressed: () {
-                            Navigator.push(
+                            Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => BottomNavBar(
                                           currentScreen: BABY_PROFILE_PAGE,
-                                        )));
+                                        )),((route) => false));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.deepOrange,

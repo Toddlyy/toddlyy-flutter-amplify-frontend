@@ -54,19 +54,20 @@ class _DisplayBabyProfileScreenState extends State<DisplayBabyProfileScreen> {
                     _dobController.text = "";
                     _relationController.text = "";
                     _genderController.text = "";
-                    Future.delayed(Duration.zero, () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => FillBabyProfilePage()));
-                      // FillBabyProfilePage();
-                    });
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height / 0.8,
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
+                    // Future.delayed(Duration.zero, () {
+                    //   // Navigator.pushReplacement(
+                    //   //     context,
+                    //   //     MaterialPageRoute(
+                    //   //         builder: (context) => FillBabyProfilePage()));
+                    //   FillBabyProfilePage();
+                    // });
+                    return Scaffold(body: FillBabyProfilePage());
+                    // return SizedBox(
+                    //   height: MediaQuery.of(context).size.height / 0.8,
+                    //   child: Center(
+                    //     child: CircularProgressIndicator(),
+                    //   ),
+                    // );
                   } else {
                     _babyFirstNameController.text =
                         babyDetails[0].babyFirstName;

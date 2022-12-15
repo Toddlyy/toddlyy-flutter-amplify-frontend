@@ -49,10 +49,6 @@ class _FillBabyProfilePageState extends State<FillBabyProfilePage> {
     if (usernameProvider.getUserCurrentState() && username != "") {
       UserCRUDService userCRUDService = new UserCRUDService();
       return Scaffold(
-              appBar: AppBar(
-                backgroundColor: Colors.orange,
-                title: Text('Fill Baby Profile'),
-              ),
               body: Container(
                 padding: EdgeInsets.only(left: 16, top: 25, right: 16),
                 // child: GestureDetector(
@@ -204,12 +200,13 @@ class _FillBabyProfilePageState extends State<FillBabyProfilePage> {
                                 borderRadius: BorderRadius.circular(20)),
                           ),
                           onPressed: () {
-                            Navigator.push(
+                            Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => BottomNavBar(
                                           currentScreen: HOME_PAGE,
-                                        )));
+                                        )),
+                                ((route) => false));
                           },
                           child: Text("CANCEL",
                               style: TextStyle(
@@ -245,13 +242,14 @@ class _FillBabyProfilePageState extends State<FillBabyProfilePage> {
                                     babyDetails.dob,
                                     babyDetails.relation,
                                     babyDetails.gender);
-                                Navigator.push(
+                                Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => CircularIndicator(
                                               nextScreenIndex:
                                                   BABY_PROFILE_PAGE,
-                                            )));
+                                            )),
+                                    ((route) => false));
                               }
                             } else {
                               debugPrint(
@@ -279,7 +277,8 @@ class _FillBabyProfilePageState extends State<FillBabyProfilePage> {
                 ),
                 // )
                 // ,
-              ))
+              ),
+              )
           // )
           ;
     } else {

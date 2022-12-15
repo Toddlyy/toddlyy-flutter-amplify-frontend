@@ -235,7 +235,7 @@ Widget itemBuilder(
                       status,
                       textAlign: TextAlign.left,
                       style: TextStyle(
-                        color: status == "In Process"
+                        color: status == "Awaiting Confirmation"
                             ? Colors.orange
                             : status == "Accepted"
                                 ? Colors.green

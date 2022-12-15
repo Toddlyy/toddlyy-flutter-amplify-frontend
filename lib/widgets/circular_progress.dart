@@ -1,3 +1,6 @@
+// This widget is to create a sleep timer in the form of a reloader so 
+// that the next screen gets updated information
+
 import 'package:flutter/material.dart';
 import 'package:toddlyybeta/screens/bottom_navbar.dart';
 
@@ -15,7 +18,7 @@ class _CircularIndicatorState extends State<CircularIndicator> {
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration(seconds: load_time), () {
-      Navigator.push(
+      Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (context) => BottomNavBar(currentScreen: widget.nextScreenIndex)));
