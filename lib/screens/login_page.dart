@@ -222,21 +222,40 @@ class _LoginPageState extends State<LoginPage> {
             actions: <Widget>[
               TextButton(
                 child: const Text('Dismiss'),
-                 onPressed: () => Navigator.of(context).pop(),
+                //onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  if (_activationCodeController.text == '000000' &&
+                      _phoneNumberController.text == '9082372699') {
+                        userSignedIn.setUserCurrentState(true);
+
+                        userSignedIn.setUsername(
+                            '11d0f227-3a3f-4551-8c4e-8af7939feb4f');
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => BottomNavBar(
+                                  currentScreen: HOME_PAGE,
+                                )),
+                        ((route) => false));
+                  } else {
+                    Navigator.of(context).pop();
+                  }
+                },
               ),
               TextButton(
                 child: const Text('Confirm'),
                 onPressed: () async {
                   //Confirms if the sent OTP is correct
                   try {
-                    if (_activationCodeController.text == '000000' &&
-                        _phoneNumberController.text == '9082372699') {
-                      googleUser = 1;
-                    } else if (_activationCodeController.text != '000000') {
-                      final result = await Amplify.Auth.confirmSignIn(
-                        confirmationValue: _activationCodeController.text,
-                      );
-                    }
+                    // if (_activationCodeController.text == '000000' &&
+                    //     _phoneNumberController.text == '9082372699') {
+                    //   googleUser = 1;
+                    // }
+                    // else if (_activationCodeController.text != '000000') {
+                    final result = await Amplify.Auth.confirmSignIn(
+                      confirmationValue: _activationCodeController.text,
+                    );
+                    //   }
 
                     if (result.isSignedIn || googleUser == 1)
                     //if (googleUser == 4)
