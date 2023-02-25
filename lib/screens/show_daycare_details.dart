@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:toddlyybeta/backend_services/daycare_crud.dart';
 import 'package:toddlyybeta/models/daycare_model.dart';
 import 'package:toddlyybeta/screens/book_slot.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class ShowDaycareDetails extends StatefulWidget {
+ // int activeIndex = 0;
   final String daycareID;
-  const ShowDaycareDetails({Key? key, required this.daycareID})
+
+  const  ShowDaycareDetails({Key? key, required this.daycareID})
       : super(key: key);
 
   @override
@@ -16,6 +19,21 @@ class _ShowDaycareDetailsState extends State<ShowDaycareDetails>
     with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
+    final urlimages = [
+      'https://www.indiewire.com/wp-content/uploads/2021/08/Robert-Pattinson-Batman.jpeg?w=300',
+      'https://dynaimage.cdn.cnn.com/cnn/c_fill,g_auto,w_1200,h_675,ar_16:9/https%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F211227135008-02-the-batman-trailer.jpg',
+      'https://media.newyorker.com/photos/6220ea493fb3bda1eed3aa3e/1:1/w_1844,h_1844,c_limit/220314_r40011.jpg'
+    ];
+/*
+    List imageList = [
+      {"id": 1, "image_path": 'assets/images/ocean.jpg'},
+      {"id": 2, "image_path": 'assets/images/tree.jpg'},
+      {"id": 3, "image_path": 'assets/images/carinanebula3.jpg'}
+    ];
+*/
+    final CarouselController carouselController = CarouselController();
+    int currentIndex = 0;
+
     DaycareCRUDService daycareCRUDService = new DaycareCRUDService();
     var size = MediaQuery.of(context).size;
     return Scaffold(
@@ -28,6 +46,7 @@ class _ShowDaycareDetailsState extends State<ShowDaycareDetails>
                 return SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
+                      /*
                       Container(
                         height: 300,
                         width: double.infinity,
@@ -36,6 +55,29 @@ class _ShowDaycareDetailsState extends State<ShowDaycareDetails>
                           fit: BoxFit.cover,
                         ),
                       ),
+                      */
+                      Center(
+                        child: CarouselSlider.builder(
+                          itemCount: urlimages.length,
+                          options: CarouselOptions(
+                            height: 400,
+
+                            /// autoPlay: true,
+                            autoPlayInterval: Duration(seconds: 3),
+                            enlargeCenterPage: true,
+                            enlargeStrategy: CenterPageEnlargeStrategy.height,
+                            // viewportFraction: 1
+                           // onPageChanged: (index, reason) =>
+                             //  setState(() => activeIndex = index),
+                          ),
+                          itemBuilder: (context, index, realIndex) {
+                            final urlImage = urlimages[index];
+
+                            return buildImage(urlImage, index);
+                          },
+                        ),
+                      ),
+
                       SizedBox(height: 10),
                       Text(
                         daycareDetails.daycareName,
@@ -208,6 +250,12 @@ class _ShowDaycareDetailsState extends State<ShowDaycareDetails>
                 );
             }));
   }
+
+  Widget buildImage(String urlImage, int index) => Container(
+        margin: EdgeInsets.symmetric(horizontal: 6),
+        color: Colors.grey,
+        child: Image.network(urlImage, fit: BoxFit.cover),
+      );
 
   Widget getTextWidgets(List<dynamic> features) {
     return new Column(
